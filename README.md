@@ -1,16 +1,29 @@
 # PyMarket
 
+
+### Prerequisites
+
 To create the python virtual environment:
-    virtualenv pymarket_env
+```
+virtualenv pymarket_env
+```
 
-To enter our python env:
-    source ./pymarket_env/bin/activate
+To enter the python env:
+```
+source ./pymarket_env/bin/activate
+```
 
-To exit:
-    deactivate
+To install the project requirements:
+```
+pip install -r requirements.txt
+```
 
-To save the current project requirements:
-    pip freeze > requirements.txt
+To exit the env:
+```
+deactivate
+```
 
-To install the project requirements somewhere else:
-    pip install -r requirements.txt
+To update the requirements.txt:
+```
+pip freeze > requirements.txt
+```
