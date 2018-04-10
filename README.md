@@ -5,12 +5,12 @@
 
 To create the python virtual environment:
 ```
-virtualenv pymarket_env
+virtualenv venv
 ```
 
 To enter the python env:
 ```
-source ./pymarket_env/bin/activate
+source ./venv/bin/activate
 ```
 
 To install the project requirements:
@@ -27,3 +27,12 @@ To update the requirements.txt:
 ```
 pip freeze > requirements.txt
 ```
+
+
+To run the flask application:
+```
+export FLASK_APP=pymarket.py
+
+flask run
+```
+
