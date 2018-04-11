@@ -1,5 +1,4 @@
-from setup import create_app
-from setup import db
+from setup import create_app, db
 from models.helper import model_classes
 
 main_application = create_app()

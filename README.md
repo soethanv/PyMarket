@@ -47,3 +47,14 @@ flask db init
 
 flask db upgrade
 ```
+
+To add stuff to database (for now):
+```
+flask shell
+
+user = User(username='username', email='user@example.com')
+user.set_password('mypassword')
+
+db.session.add(user)
+db.session.commit()
+```
