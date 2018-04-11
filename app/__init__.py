@@ -3,12 +3,21 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+
+db = SQLAlchemy()
+migrate = Migrate()
 
 
-# this import must be below the app creation
-# to prevent circular imports. routes uses the app variable
-from app import routes, models
+def create_app():
+    application = Flask(__name__)
+    application.config.from_object(Config)
+
+    db.init_app(application)
+    migrate.init_app(application, db)
+
+    return application
+
+# this import must be below the application creation
+# to prevent circular imports. routes uses the application variable
+# from application import routes
+from app.models import *

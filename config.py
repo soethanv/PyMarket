@@ -9,5 +9,5 @@ class Config(object):
     # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://username:password@server/db_name'
 
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-                              'sqlite:///' + os.path.join(basedir, 'app.db')
+                              'sqlite:///' + os.path.join(basedir, 'pymarket.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False

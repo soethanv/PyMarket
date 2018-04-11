@@ -28,11 +28,22 @@ To update the requirements.txt:
 pip freeze > requirements.txt
 ```
 
-
 To run the flask application:
 ```
-export FLASK_APP=pymarket.py
+export FLASK_APP=application.py
 
 flask run
 ```
 
+or
+
+```
+python application.py
+```
+
+Init and upgrade database
+```
+flask db init
+
+flask db upgrade
+```
