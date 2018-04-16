@@ -2,5 +2,7 @@
 
 {% block content %}
     <h1>This is the dashboard</h1>
-     <a href="{{ url_for('logout.logout') }}">Logout</a>
+    <a href="{{ url_for('inventory.inventory') }}">Inventory</a>
+    <a href="{{ url_for('sales.sales') }}">Sales Orders</a>
+    <a href="{{ url_for('logout.logout') }}">Logout</a>
 {% endblock %}
