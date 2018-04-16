@@ -3,6 +3,13 @@
 
 ### Prerequisites
 
+To set up virtual environment via bash script:
+```
+. project_init.sh
+
+Take note of the '.'
+```
+
 To create the python virtual environment:
 ```
 virtualenv venv
