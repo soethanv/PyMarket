@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+  
+</style>
     <h1>This is the inventory page</h1>
      <a href="{{ url_for('logout.logout') }}">Logout</a>
-     <table style="width:100%">
+     <table style="width:100%" class="table">
          <tr>
-             <th>SKU</th>
-             <th>Name</th>
-             <th>Category</th>
-             <th>Reorder Point</th>
-             <th>Quantity</th>
-             <th>Options</th>
+             <th scope="col">SKU</th>
+             <th scope="col">Name</th>
+             <th scope="col">Category</th>
+             <th scope="col">Reorder Point</th>
+             <th scope="col">Quantity</th>
+             <th scope="col">Options</th>
          </tr>
          {% for product in inventory %}
             <tr>
@@ -19,7 +22,19 @@
                 <td>{{product[2]}}</td>
                 <td>{{product[3]}}</td>
                 <td>{{product[4]}}</td>
-                <td>More...</td>
+                <td>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Action
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="#">Reorder</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Edit</a>
+                      <a class="dropdown-item btn btn-danger" href="#">Delete</a>
+                    </div>
+                  </div>
+                </td>
             </tr>
        {% endfor %}
 
