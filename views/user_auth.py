@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
-from flask_login import current_user, login_user
+from flask_login import current_user, login_user, logout_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
@@ -7,7 +7,7 @@ from models.user import User
 from setup import loginManager
 
 
-bp = Blueprint('login', __name__, template_folder='templates', static_folder='static')
+bp = Blueprint('user_auth', __name__, template_folder='templates', static_folder='static')
 
 
 class LoginForm(FlaskForm):
@@ -37,6 +37,13 @@ def login():
         # return redirect(next_page)
         return redirect(url_for('dashboard.dashboard'))
     return render_template('login.html', title='Sign In', form=form)
+
+
+@bp.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('.login'))
+
 
 
 @loginManager.user_loader
