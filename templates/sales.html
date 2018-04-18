@@ -1,6 +1,66 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: red;
+}
+
+table, th, td {
+   border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+.show {
+    display: block;
+}
+
+</style>
+
     <h1>This is the sales page</h1>
      <a href="{{ url_for('logout.logout') }}">Logout</a>
+     <table style="width:100%">
+         <tr>
+             <th>Order</th>
+             <th>Customer</th>
+             <th>Sales Channel</th>
+             <th>Reference Order</th>
+         </tr>
+         {% for order in sales %}
+            <tr>
+                <td>{{order[0]}}</td>
+                <td>{{order[1]}}</td>
+                <td>{{order[2]}}</td>
+                <td>{{order[3]}}</td>
+                <td>{{order[4]}}</td>
+                <td><div class="dropdown">
+                  <button onclick="edit_product()" class="dropbtn">Products</button>
+                  <!--<div id="myDropdown" class="dropdown-content">
+                    <a href="#edit">Edit</a>
+                    <a href="#delete">Delete</a>
+                  	
+                  </div>-->
+              </div></td>
+            </tr>
+       {% endfor %}}
+
+     </table>
+
 {% endblock %}
