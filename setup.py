@@ -10,7 +10,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 loginManager = LoginManager()
 
-loginManager.login_view = '.login'
+loginManager.login_view = 'user_auth.login'
 
 from views.helper import all_blueprints
 

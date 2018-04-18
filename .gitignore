@@ -1,4 +1,13 @@
+*.pyc
 
 venv/
 __pycache__/
 #pymarket.db
+
+# VS Code Ignore
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+

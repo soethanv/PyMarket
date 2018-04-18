@@ -1,13 +1,14 @@
-from flask import Blueprint, render_template, flash, redirect, url_for
-from flask_login import current_user, login_user
+from flask import Blueprint, render_template, flash, redirect, url_for, request
+from flask_login import current_user, login_user, logout_user, login_required
 from flask_wtf import FlaskForm
+from werkzeug.urls import url_parse
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
 from models.user import User
 from setup import loginManager
 
 
-bp = Blueprint('login', __name__, template_folder='templates', static_folder='static')
+bp = Blueprint('user_auth', __name__, template_folder='templates', static_folder='static')
 
 
 class LoginForm(FlaskForm):
@@ -31,12 +32,21 @@ def login():
         login_user(user)
 
         # Code for redirecting to page user came from
-        # next_page = request.args.get('next')
-        # if not next_page or url_parse(next_page).netloc != '':
-        #     next_page = url_for('dashboard.dashboard')
-        # return redirect(next_page)
-        return redirect(url_for('dashboard.dashboard'))
+        # and protection from open redirect attack
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('dashboard.dashboard')
+        return redirect(next_page)
+    
     return render_template('login.html', title='Sign In', form=form)
+
+
+@bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('.login'))
+
 
 
 @loginManager.user_loader

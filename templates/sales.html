@@ -35,7 +35,7 @@ th, td {
 </style>
 
     <h1>This is the sales page</h1>
-     <a href="{{ url_for('logout.logout') }}">Logout</a>
+     <a href="{{ url_for('user_auth.logout') }}">Logout</a>
      <table style="width:100%">
          <tr>
              <th>Order</th>
@@ -62,5 +62,4 @@ th, td {
        {% endfor %}}
 
      </table>
-
 {% endblock %}
