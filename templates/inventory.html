@@ -20,10 +20,15 @@
          {% for product in inventory %}
             <tbody>
                 <tr>
+                    <!--SKU-->
                     <td>{{product[0]}}</td>
+                    <!--Name-->
                     <td>{{product[1]}}</td>
+                    <!--Category-->
                     <td>{{product[2]}}</td>
+                    <!--Reorder Point-->
                     <td>{{product[3]}}</td>
+                    <!--Quantity-->
                     <td>{{product[4]}}</td>
                     <td>
                       <div class="btn-group">
