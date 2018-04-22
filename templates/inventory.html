@@ -1,51 +1,91 @@
 {% extends "base.html" %}
 
 {% block content %}
-<style>
-  
-</style>
-    <h1>This is the inventory page</h1>
-    <a href="{{ url_for('user_auth.logout') }}">Logout</a>
-     <table style="width:100%" class="table">
-         <thead>
-            <tr>
-                <th scope="col">SKU</th>
-                <th scope="col">Name</th>
-                <th scope="col">Category</th>
-                <th scope="col">Reorder Point</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Options</th>
-            </tr>
-         </thead>
-         {% for product in inventory %}
-            <tbody>
-                <tr>
-                    <!--SKU-->
-                    <td>{{product[0]}}</td>
-                    <!--Name-->
-                    <td>{{product[1]}}</td>
-                    <!--Category-->
-                    <td>{{product[2]}}</td>
-                    <!--Reorder Point-->
-                    <td>{{product[3]}}</td>
-                    <!--Quantity-->
-                    <td>{{product[4]}}</td>
-                    <td>
-                      <div class="btn-group">
-                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Action
-                        </button>
-                        <div class="dropdown-menu">
-                          <a class="dropdown-item" href="#">Reorder</a>
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="#">Edit</a>
-                          <a class="dropdown-item btn btn-danger" href="#">Delete</a>
+
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">PyMarket</a>
+
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="{{ url_for('user_auth.logout') }}">Sign out</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="container-fluid" style="margin-top:40px">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="{{ url_for('dashboard.dashboard') }}">
+              <span data-feather="home"></span>
+              Dashboard <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('sales.sales') }}">
+              <span data-feather="file"></span>
+              Sales Orders
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="shopping-cart"></span>
+              Inventory
+            </a>
+          </li>
+        </ul>
+        </ul>
+      </div>
+    </nav>
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+              <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Inventory</h1>
+              </div>
+    <div class="container" style="margin-top:30px">
+       <table style="width:90%" class="table">
+           <thead>
+              <tr style="text-align:left">
+                  <th scope="col">SKU</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Reorder Point</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Options</th>
+              </tr>
+           </thead>
+           {% for product in inventory %}
+              <tbody>
+                  <tr>
+                      <!--SKU-->
+                      <td>{{product[0]}}</td>
+                      <!--Name-->
+                      <td>{{product[1]}}</td>
+                      <!--Category-->
+                      <td>{{product[2]}}</td>
+                      <!--Reorder Point-->
+                      <td>{{product[3]}}</td>
+                      <!--Quantity-->
+                      <td>{{product[4]}}</td>
+                      <td>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Action
+                          </button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Reorder</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item btn btn-danger" href="#">Delete</a>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                </tr>
-            </tbody>
-       {% endfor %}
-     </table>
-     
+                      </td>
+                  </tr>
+              </tbody>
+         {% endfor %}
+       </table>
+    </div>
+
+
 {% endblock %}
