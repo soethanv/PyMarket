@@ -2,11 +2,13 @@ from setup import db
 from sqlalchemy import text
 from datetime import datetime
 from models.product import Product
+from models.productbatch import ProductBatch
 from models.purchaseorder import PurchaseOrder
 
 # TODO: make exception handling less generic
 
 
+# Product crud methods
 
 def create_product(SKU, name, category, price, reorder_point, stock_quantity):
     product = Product(SKU, name, category, price, reorder_point, stock_quantity)
@@ -15,6 +17,10 @@ def create_product(SKU, name, category, price, reorder_point, stock_quantity):
         db.session.commit()
     except Exception as err:
         raise err
+
+
+def read_single_product(SKU):
+    return Product.query.filter_by(SKU=SKU).first()
 
 
 def read_all_products():
@@ -56,6 +62,68 @@ def delete_product(SKU):
     except Exception as err:
         raise err
 
+
+
+# Batch crud methods
+
+def create_product_batch(SKU, batch_quantity, year, month, day):
+    product_batch = ProductBatch(SKU, batch_quantity, date(year, month, day))
+    try:
+        db.session.add(product_batch)
+        db.session.commit()
+        product = read_single_product(SKU)
+        product.update_stock_quantity()
+        db.session.commit()
+    except Exception as err:
+        raise err
+
+
+def read_product_batches(SKU):
+    product = Product.query.filter_by(SKU=SKU).first()
+    return product.batches
+
+
+def read_single_batch(batchID):
+    return ProductBatch.query.filter_by(batchID=batchID).first()
+
+
+def extract_quantity_from_batch(SKU, requested_quantity):
+    '''
+        Method doesn't actually return items from the batch,
+        but just decrements the requested_quantity from the
+        inventory's quantity. Exception is thrown if the
+        requested amount is greated than the stock_quantity
+    '''
+    product = Product.query.filter_by(SKU=SKU).first()
+
+    if product.stock_quantity < requested_quantity:
+        raise Exception('Not enough stock_quantity to fill order!')
+
+    product.stock_quantity = product.stock_quantity - requested_quantity
+    db.session.commit()
+
+    batches = product.batches
+    batches = sorted(batches, key=lambda x: x.batch_expiration)
+
+    for batch in batches:
+        if requested_quantity == 0:
+            break
+
+        if batch.batch_quantity <= requested_quantity:
+            # batch is too small or just the right amount
+            requested_quantity -= batch.batch_quantity
+            db.session.delete(batch)
+        else:
+            # batch has more than the requested_quantity
+            batch.batch_quantity -= requested_quantity
+            break
+
+
+    db.session.commit()
+
+
+
+# Order crud methods
 
 def read_all_orders():
     return PurchaseOrder.query.filter_by(status='UNFILLED')

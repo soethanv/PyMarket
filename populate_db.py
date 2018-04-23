@@ -1,15 +1,17 @@
 from application import main_application
 from setup import db
 from sqlalchemy import text
+from datetime import date
 from models.user import User
 from models.customer import Customer
 from models.address import Address
 from models.creditcard import CreditCard
 from models.product import Product
+from models.productbatch import ProductBatch
 from models.shoppingcart import ShoppingCart
 from models.cartitem import CartItem
 from models.purchaseorder import PurchaseOrder
-
+from models.crud_operations import read_all_products
 
 with main_application.app_context():
 
@@ -33,11 +35,12 @@ with main_application.app_context():
 
 
     product_list = [
-        Product(1234, 'Granny Apple', 'Fruit', 0.10, 100, 200, '01-02-01'),
-        Product(7384, 'Cutie Orange', 'Fruit', 0.15, 150, 250, '01-01-01'),
-        Product(90821, 'Awesome Sauce Hot Sauce', 'Condiment', 4.00, 50, 65, '03-03-01'),
-        Product(2321, 'Best Protein Bagels', 'Bread', 5.00, 75, 100, '02-06-03'),
-        Product(4326, 'Kobe Beef Burgers', 'Meat', 15.00, 50, 75, '04-01-01')
+        # Product(SKU, name, category, price, reorder_point, stock_quantity, storage_location)
+        Product(1234, 'Granny Apple', 'Fruit', 0.10, 100, '01-02-01'),
+        Product(7384, 'Cutie Orange', 'Fruit', 0.15, 150, '01-01-01'),
+        Product(90821, 'Awesome Sauce Hot Sauce', 'Condiment', 4.00, 50, '03-03-01'),
+        Product(2321, 'Best Protein Bagels', 'Bread', 5.00, 75, '02-06-03'),
+        Product(4326, 'Kobe Beef Burgers', 'Meat', 15.00, 50, '04-01-01')
     ]
 
     for user in user_list:
@@ -48,6 +51,50 @@ with main_application.app_context():
 
     db.session.commit()
 
+
+    # ProductBatch(self, SKU, batch_quantity, batch_expiration)
+    # date(year, month, day)
+    batch_list = [
+        ProductBatch(1234, 20, date(2018, 6, 15)),
+        ProductBatch(7384, 40, date(2018, 6, 8)),
+        ProductBatch(90821, 10, date(2019, 5, 10)),
+        ProductBatch(2321, 15, date(2018, 5, 5)),
+        ProductBatch(4326, 10, date(2018, 5, 6)),
+
+        ProductBatch(1234, 20, date(2018, 7, 15)),
+        ProductBatch(7384, 40, date(2018, 7, 8)),
+        ProductBatch(90821, 10, date(2019, 5, 10)),
+        ProductBatch(2321, 15, date(2018, 5, 15)),
+        ProductBatch(4326, 10, date(2018, 5, 11)),
+
+        ProductBatch(1234, 20, date(2018, 8, 15)),
+        ProductBatch(7384, 40, date(2018, 8, 8)),
+        ProductBatch(90821, 10, date(2019, 5, 10)),
+        ProductBatch(2321, 15, date(2018, 5, 25)),
+        ProductBatch(4326, 10, date(2018, 5, 15)),
+
+        ProductBatch(1234, 20, date(2018, 9, 15)),
+        ProductBatch(7384, 40, date(2018, 9, 8)),
+        ProductBatch(90821, 10, date(2019, 5, 10)),
+        ProductBatch(2321, 15, date(2018, 6, 2)),
+        ProductBatch(4326, 10, date(2018, 5, 20)),
+
+        ProductBatch(1234, 20, date(2018, 10, 15)),
+        ProductBatch(7384, 40, date(2018, 10, 8)),
+        ProductBatch(90821, 10, date(2019, 5, 10)),
+        ProductBatch(2321, 15, date(2018, 6, 10)),
+        ProductBatch(4326, 10, date(2018, 5, 23))
+    ]
+
+    for batch in batch_list:
+        db.session.add(batch)
+
+    db.session.commit()
+
+    for product in read_all_products():
+        product.update_stock_quantity()
+
+    db.session.commit()
 
     ############################### Customer 1 ###############################
 

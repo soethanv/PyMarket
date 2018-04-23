@@ -6,6 +6,7 @@ from models.creditcard import CreditCard
 from models.shoppingcart import ShoppingCart
 from models.cartitem import CartItem
 from models.product import Product
+from models.productbatch import ProductBatch
 from models.purchaseorder import PurchaseOrder
 
 model_classes = {
@@ -17,5 +18,6 @@ model_classes = {
     'ShoppingCart': ShoppingCart,
     'CartItem': CartItem,
     'Product': Product,
+    'ProductBatch': ProductBatch,
     'PurchaseOrder': PurchaseOrder
 }
