@@ -14,9 +14,14 @@ def sales():
 
 def get_sales():
 	sales = []
-	sales.append((1111, 'Carter',  'Food', 'NQ324'))
-	sales.append((2111, 'Gus',  'Food', 'LQ324'))
-	sales.append((3111, 'Dalton',  'Food', 'TQ324'))
-	sales.append((4111, 'Julia',  'Food', 'ZQ324'))
-	sales.append((5111, 'Soe',  'Food', 'WQ324'))
+	inventory = []
+	inventory.append([123, 'Cabbage', 'Vegetables', 200, 233])
+	inventory.append([456, 'Wheat', 'Grain', 1000, 3000])
+	inventory.append([456, 'Barley', 'Grain', 1000, 3000])
+	inventory.append([456, 'Apple', 'Fruit', 100, 200])
+	sales.append((1111, 'Carter',  'Food', 'NQ324', inventory))
+	sales.append((2111, 'Gus',  'Food', 'LQ324', inventory))
+	sales.append((3111, 'Dalton',  'Food', 'TQ324', inventory))
+	sales.append((4111, 'Julia',  'Food', 'ZQ324', inventory))
+	sales.append((5111, 'Soe',  'Food', 'WQ324', inventory))
 	return sales
