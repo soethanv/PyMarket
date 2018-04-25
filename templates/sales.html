@@ -15,9 +15,6 @@
     background-color: red;
 }
 
-table, th, td {
-   border: 1px solid black;
-}
 
 table {
     border-collapse: collapse;
@@ -36,12 +33,13 @@ th, td {
 
     <h1>This is the sales page</h1>
      <a href="{{ url_for('user_auth.logout') }}">Logout</a>
-     <table id="myTable" style="width:100%">
+     <table id="myTable" style="width:100%" class="table table-hover table-sm">
          <tr>
              <th>Order</th>
              <th>Customer</th>
              <th>Sales Channel</th>
              <th>Reference Order</th>
+             <th>Options</th>
          </tr>
         {% set count = 1 %}
          {% for order in sales %}
@@ -51,7 +49,7 @@ th, td {
                 <td>{{order[1]}}</td>
                 <td>{{order[2]}}</td>
                 <td>{{order[3]}}</td>
-                <td>{{count}}</td>
+                
                 {% set count = count + 1 %}
                	
                 <td><div class="dropdown">
