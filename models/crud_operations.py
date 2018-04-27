@@ -126,7 +126,7 @@ def extract_quantity_from_batch(SKU, requested_quantity):
 # Order crud methods
 
 def read_all_orders():
-    return PurchaseOrder.query.filter_by(status='UNFILLED')
+    return PurchaseOrder.query.filter_by(status='UNFILLED').all()
 
 
 def update_order_status(poID, new_status):
@@ -147,7 +147,7 @@ def get_order_items(poID):
 
     try:
         query = text(query)
-        results = db.engine.execute(query)
+        results = db.engine.execute(query).fetchall()
     except Exception as err:
         raise err
 
