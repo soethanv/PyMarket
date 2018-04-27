@@ -15,7 +15,6 @@
     background-color: red;
 }
 
-
 table {
     border-collapse: collapse;
 }
@@ -25,13 +24,28 @@ th, td {
     text-align: left;
 }
 
-.show {
-    display: block;
+/*tbody tr {
+    display : none;
 }
+tr.parent {
+    display : table-row;
+}
+tr.open {
+    display : table-row;
+}*/
+
+/*.show {
+    display: block;
+}*/
+
+.products {
+    display: none;
+}
+
 
 </style>
 
-    <h1>This is the sales page</h1>
+    <h1 align="center">This is the sales page</h1>
      <a href="{{ url_for('user_auth.logout') }}">Logout</a>
      <table id="myTable" style="width:100%" class="table table-hover table-sm">
          <tr>
@@ -41,58 +55,57 @@ th, td {
              <th>Reference Order</th>
              <th>Options</th>
          </tr>
-        {% set count = 1 %}
+         
+                  
          {% for order in sales %}
-
-            <tr>
+             
+            <tr class="parent">
+                <!--Order #-->
                 <td>{{order[0]}}</td>
+                <!--Customer-->
                 <td>{{order[1]}}</td>
+                <!--Sales Channel-->
                 <td>{{order[2]}}</td>
+                <!--Reference Order-->
                 <td>{{order[3]}}</td>
-                
-                {% set count = count + 1 %}
-               	
-                <td><div class="dropdown">
-                  <button onclick="Show_products({{count}}, '{{ order[1] }}', {{ order[4] }})" class="dropbtn">Products</button>
+                 <td><div class="dropdown">
+                  <button onclick="Show_products()" class="dropbtn">Products</button>
                   <!--<div id="myDropdown" class="dropdown-content">
                     <a href="#edit">Edit</a>
                     <a href="#delete">Delete</a>
-                  	
+                    
                   </div>-->
               </div></td>
-            </tr>
+              </tr>
+               
+                 <!--<tbody style="display:none">-->
+                 
+
+
+                 {% for product in order[4] %}
+                  <tr class="products" id="products">
+                  <td>{{product[0]}}</td>
+                  <td>{{product[1]}}</td>
+                  <td>{{product[2]}}</td>
+                  <td>{{product[4]}}</td>
+                  
+                </tr>
+                {% endfor %}
+                <!--</tbody>-->
+
             
        {% endfor %}
       <script>
-function Show_products(rownum, order, product) {
-	var table = document.getElementById("myTable");
-    var row = table.insertRow(rownum);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    var cell3 = row.insertCell(2);
-    var cell4 = row.insertCell(3);
-    var cell5 = row.insertCell(4);
-    cell1.innerHTML = "";
-    cell2.innerHTML = "Name";
-    cell3.innerHTML = "Category";
-    cell4.innerHTML = "Reorder Point";
-    cell5.innerHTML = "Quantity";
-	var i;
-    for (i = 0; i < 3; i++){	
-    var row = table.insertRow(rownum+1);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    var cell3 = row.insertCell(2);
-    var cell4 = row.insertCell(3);
-    var cell5 = row.insertCell(4);
-    cell1.innerHTML = "";
-    cell2.innerHTML = product[i][0];
-    cell3.innerHTML = product[i][1];
-    cell4.innerHTML = product[i][2];
-    cell5.innerHTML = product[i][4];
 
-    }
 
+$("#products").on("click","a",function(e) {
+    e.preventDefault();
+    $(this).closest("tr").nextUntil(".parent").toggleClass("open");
+});
+
+function Show_products() {
+  document.getElementById("myDiv").style.display = "table-row";
+  //document.getElementsByClassName("products").style.display = ""
 }
 
 function Unshow_Products() {

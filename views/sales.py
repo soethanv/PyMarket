@@ -4,12 +4,19 @@ from flask_login import login_required
 
 bp = Blueprint('sales', __name__, template_folder='templates', static_folder='static')
 
+NumRows = 0
 
 @bp.route('/sales')
 @login_required
 def sales():
     sales = get_sales()
-    return render_template('sales.html', title='Sales Orders', sales=sales)
+    salesLen = len(sales)
+    return render_template('sales.html', title='Sales Orders', sales=sales, salesLen=salesLen, NumRows=NumRows, myFunction=increment)
+
+def increment(numAdded):
+	global NumRows
+	NumRows += numAdded
+	return NumRows
 
 
 def get_sales():
