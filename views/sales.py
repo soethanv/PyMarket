@@ -11,7 +11,7 @@ NumRows = 0
 def sales():
     sales = get_sales()
     salesLen = len(sales)
-    return render_template('sales.html', title='Sales Orders', sales=sales, salesLen=salesLen, NumRows=NumRows, myFunction=increment)
+    return render_template('sales.html', title='Sales Orders', sales=sales)
 
 def increment(numAdded):
 	global NumRows
