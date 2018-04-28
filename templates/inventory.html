@@ -30,45 +30,85 @@
           <form action="/inventoryadder" method="post">
             <div class="form-row align-items-center">
               <div class="col-auto">
-                <label for="validationSKU">SKU</label>
-                <input type="text" name="SKU" class="form-control mb-2" id="validationSKU" placeholder="SKU" required pattern="[0-9]{3}" maxlength="3">
+                <label for="addSKU">SKU</label>
+                <input type="text" name="SKU" class="form-control mb-2" id="addSKU" placeholder="SKU" required pattern="[0-9]+" maxlength="9">
               </div>
               <div class="col-auto">
-                <label for="validationName">Product Name</label>
-                <input type="text" name="Name" class="form-control mb-2" id="validationName" placeholder="Apple" required pattern="[A-Za-z]+" maxlength="14">
+                <label for="addName">Product Name</label>
+                <input type="text" name="Name" class="form-control mb-2" id="addName" placeholder="Apple" required pattern="^[\w\-\s]+$" maxlength="22">
               </div>
               <div class="col-auto">
-                <label for="validationRP">Reorder Point</label>
-                <input type="text" name="RP" class="form-control mb-2" id="validationRP" placeholder="200" required min="1" max="8" pattern="[0-9]*">
+                <label for="adddRP">Reorder Point</label>
+                <input type="text" name="RP" class="form-control mb-2" id="addRP" placeholder="200" required min="1" max="8" pattern="[0-9]*">
               </div>
               <div class="col-auto">
-                <label for="validationQ">Quantity</label>
-                <input type="text" name="Amount" class="form-control mb-2" id="validationQ" placeholder="500" required min="1" max="8" pattern="[0-9]*">
+                <label for="addQ">Quantity</label>
+                <input type="text" name="Quantity" class="form-control mb-2" id="addQ" placeholder="500" required min="1" max="8" pattern="[0-9]*">
               </div>
               <div class="col-auto">
-                <label for="validationPrice">Price</label>
-                <input type="text" name="Price" class="form-control mb-2" id="validationPrice" placeholder="5.00" required min="1" max="8" pattern="[0-9]*.{1}[0-9]*">
+                <label for="addPrice">Price</label>
+                <input type="text" name="Price" class="form-control mb-2" id="addPrice" placeholder="5.00" required min="1" max="8" pattern="[0-9]*.{1}[0-9]*">
               </div>
               <div class="col-auto">
-                <label for="validationCat">Category</label>
-                <input type="text" name="Cat" class="form-control mb-2" id="validationCat" placeholder="Fruit" required pattern="[A-Za-z]+" maxlength="14">
+                <label for="addCat">Category</label>
+                <input type="text" name="Category" class="form-control mb-2" id="addCat" placeholder="Fruit" required pattern="[A-Za-z]+" maxlength="14">
               </div>
-              <div class="col-auto">
-                <label for="validationStock">Stock</label>
-                <input type="text" name="Stock" class="form-control mb-2" id="validationStock" placeholder="500" required min="1" max="8" pattern="[0-9]*">
-              </div>
-                <input type="submit" class="btn btn-primary"></input>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+            <div class="modal-footer">
+              <input type="submit" class="btn btn-primary"></input>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
           </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>
   </div>
   <!--End of Add Button Model-->
+  <!--Popup-Edit Modal -->
+  <div class="modal fade" id='editModal' tabindex="1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModal">Edit product</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/inventoryeditor" method="post">
+            <div class="form-row align-items-center">
+              <input type="hidden" name="SKU" id="editSKU">
+              <div class="col-auto">
+                <label for="editName">Product Name</label>
+                <input type="text" name="Name" class="form-control mb-2" id="editName" required pattern="^[\w\-\s]+$" maxlength="22">
+              </div>
+              <div class="col-auto">
+                <label for="editRP">Reorder Point</label>
+                <input type="text" name="RP" class="form-control mb-2" id="editRP" required min="1" max="8" pattern="[0-9]*">
+              </div>
+              <div class="col-auto">
+                <label for="editQ">Quantity</label>
+                <input type="text" name="Quantity" class="form-control mb-2" id="editStock" required min="1" max="8" pattern="[0-9]*">
+              </div>
+              <div class="col-auto">
+                <label for="editPrice">Price</label>
+                <input type="text" name="Price" class="form-control mb-2" id="editPrice" required min="1" max="8" pattern="[0-9]*.{1}[0-9]*">
+              </div>
+              <div class="col-auto">
+                <label for="editCat">Category</label>
+                <input type="text" name="Category" class="form-control mb-2" id="editCat" required pattern="[A-Za-z]+" maxlength="14">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input type="submit" class="btn btn-primary"></input>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of popup edit modal -->
 
   <div class="container">
     <div align="left">
@@ -112,13 +152,19 @@
       {% else %}
         table_str += '<tr>';
       {% endif %}
-      table_str += 
+      table_str +=
                         '<td>' + '{{batch.batchID}}' + '</td>'+
                         //'<td>' + '{{batch.producer}}' + '</td>'+
                         '<td>' + '{{batch.batch_quantity}}' + '</td>'+
                         '<td>' + '{{batch.batch_expiration}}' + '</td>'+
+<<<<<<< HEAD
                         '<td>' + 'X' + '</td>'+
                     '</tr>'; 
+||||||| merged common ancestors
+                    '</tr>'; 
+=======
+                    '</tr>';
+>>>>>>> b2d33b9c590f3c74343b5ea740c2acd5098a6d4f
     {% endfor %}
     table_str += "</table>";
     return table_str;
@@ -128,12 +174,11 @@
     var inventory_data = {{inventory|tojson}};
     console.log(typeof(inventory_data))
     var table = $('#inventory_table').DataTable( {
-      data: inventory_data, 
-      
+      data: inventory_data,
+
       "columns": [ {
           "targets": 0,
           "className":      'details-control',
-          "orderable":      false,
           "data": null,
           "defaultContent": ''
         },
@@ -169,12 +214,50 @@
             "targets": -1,
             title: "Options",
             "data": null,
-            "defaultContent": '<button type="button" class="btn btn-primary">Edit</button>'
-            + '<button type="button" class="btn btn-danger" style="margin-left:10px" >Delete</button>'
+            "defaultContent": '<button type="button" name="editButton" class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>'
+            + '<button type="button" name="deleteButton" class="btn btn-danger" style="margin-left:10px" >Delete</button>'
         }
       ]
 
     } );
+
+    // editModel
+    $('#inventory_table tbody').on('click', 'button', function() {
+        var name = $(this).attr('name');
+        if (name == "editButton") {
+            var tr = $(this).parents('tr');
+            var row = table.row( tr );
+            var data = row.data();
+            document.getElementById('editSKU').value = data[0]
+            document.getElementById('editName').value = data[1];
+            document.getElementById('editCat').value = data[2];
+            document.getElementById('editPrice').value = data[3];
+            document.getElementById('editRP').value = data[4];
+            document.getElementById('editStock').value = data[5];
+        }
+    });
+
+    // Delete product
+    $('#inventory_table tbody').on('click', 'button', function() {
+        var name = $(this).attr('name');
+        if (name == "deleteButton") {
+            var tr = $(this).closest('tr');
+            var row = table.row( tr );
+            var data = row.data();
+            $.ajax({
+                      type:'POST',
+                      url:'/inventorydelete',
+                      data: {row_sku: data[0]},
+                      dataType: 'text',
+                      success: function(response) {
+                          console.log('success');
+                      },
+                      error: function(err){
+                          console.log(err);
+                      }
+            });
+        }
+    });
 
     // Add event listener for opening and closing details
     $('#inventory_table tbody').on('click', 'td.details-control', function () {
@@ -194,7 +277,7 @@
             row.child( format(row.data()) ).show();
             tr.addClass('shown');
         }
-    } );    
+    } );
   } );
 </script>
 {% endblock %}
