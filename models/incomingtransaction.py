@@ -1,4 +1,5 @@
 from setup import db
+from datetime import datetime
 
 
 class IncomingTransaction(db.Model):
@@ -7,7 +8,7 @@ class IncomingTransaction(db.Model):
     SKU = db.Column(db.Integer, nullable=False)
     batchID = db.Column(db.Integer, unique=True, nullable=False)
     producer = db.Column(db.String(32), nullable=False)
-    transactionDate = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    transactionDate = db.Column(db.DateTime, nullable=False)
 
 
     def __init__(self, SKU, batchID, producer, transactionDate):
