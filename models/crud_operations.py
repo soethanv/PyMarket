@@ -16,6 +16,7 @@ def create_product(SKU, name, category, price, reorder_point, storage_location):
         db.session.add(product)
         db.session.commit()
     except Exception as err:
+        db.session.rollback()
         raise err
 
 
@@ -33,6 +34,7 @@ def update_product_name(SKU, name):
         product.name = name
         db.session.commit()
     except Exception as err:
+        db.session.rollback()
         raise err
 
 
@@ -42,6 +44,7 @@ def update_product_reorder_point(SKU, reorder_point):
         product.reorder_point = reorder_point
         db.session.commit()
     except Exception as err:
+        db.session.rollback()
         raise err
 
 
@@ -51,6 +54,7 @@ def update_product_price(SKU, price):
         product.price = price
         db.session.commit()
     except Exception as err:
+        db.session.rollback()
         raise err
 
 
@@ -64,6 +68,7 @@ def delete_product(SKU):
         db.session.delete(product)
         db.session.commit()
     except Exception as err:
+        db.session.rollback()
         raise err
 
 
@@ -84,6 +89,7 @@ def create_product_batch(SKU, producer, batch_quantity, year, month, day):
         # product.update_stock_quantity()
         db.session.commit()
     except Exception as err:
+        db.session.rollback()
         raise err
 
 
@@ -102,6 +108,7 @@ def delete_single_batch(batchID):
         db.session.delete(product_batch)
         db.session.commit()
     except Exception as err:
+        db.session.rollback()
         raise err
 
 
@@ -142,7 +149,6 @@ def extract_quantity_from_batch(customerID, SKU, requested_quantity):
 
     db.session.commit()
 
-    # TODO: verify this is working
     out_transaction = OutgoingTransaction(customerID, SKU, requested_quantity, from_batches_str)
     db.session.add(out_transaction)
     db.session.commit()
@@ -162,6 +168,7 @@ def update_order_status(poID, new_status):
         order.lastUpdatedDt = datetime.utcnow()
         db.session.commit()
     except Exception as err:
+        db.session.rollback()
         raise err
 
 
@@ -175,6 +182,7 @@ def get_order_items(poID):
         query = text(query)
         results = db.engine.execute(query).fetchall()
     except Exception as err:
+        db.session.rollback()
         raise err
 
     return results
@@ -186,4 +194,5 @@ def update_order_item_status(cartItemID):
         cart_item.status = 'FILLED'
         db.session.commit()
     except Exception as err:
+        db.session.rollback()
         raise err
