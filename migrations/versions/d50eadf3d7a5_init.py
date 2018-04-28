@@ -1,8 +1,8 @@
 """init
 
-Revision ID: c5c0448564d0
+Revision ID: d50eadf3d7a5
 Revises: 
-Create Date: 2018-04-23 15:59:30.964481
+Create Date: 2018-04-28 15:48:09.169052
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c5c0448564d0'
+revision = 'd50eadf3d7a5'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,6 +23,7 @@ def upgrade():
     sa.Column('SKU', sa.Integer(), nullable=False),
     sa.Column('cartID', sa.Integer(), nullable=False),
     sa.Column('quantity', sa.Integer(), nullable=False),
+    sa.Column('status', sa.String(length=15), nullable=False),
     sa.PrimaryKeyConstraint('cartItemID')
     )
     op.create_table('Customer',
@@ -33,6 +34,22 @@ def upgrade():
     sa.PrimaryKeyConstraint('customerID')
     )
     op.create_index(op.f('ix_Customer_email'), 'Customer', ['email'], unique=True)
+    op.create_table('IncomingTransaction',
+    sa.Column('batchID', sa.Integer(), nullable=False),
+    sa.Column('SKU', sa.Integer(), nullable=False),
+    sa.Column('producer', sa.String(length=32), nullable=False),
+    sa.Column('transactionDate', sa.DateTime(), nullable=False),
+    sa.PrimaryKeyConstraint('batchID')
+    )
+    op.create_table('OutgoingTransaction',
+    sa.Column('outTransactionID', sa.Integer(), nullable=False),
+    sa.Column('customerID', sa.Integer(), nullable=False),
+    sa.Column('SKU', sa.Integer(), nullable=False),
+    sa.Column('quantity', sa.Integer(), nullable=False),
+    sa.Column('from_batches', sa.String(length=128), nullable=False),
+    sa.Column('transactionDate', sa.DateTime(), nullable=False),
+    sa.PrimaryKeyConstraint('outTransactionID', 'customerID')
+    )
     op.create_table('Product',
     sa.Column('SKU', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=24), nullable=False),
@@ -54,8 +71,6 @@ def upgrade():
     sa.Column('lastUpdatedDt', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('poID')
     )
-    op.create_index(op.f('ix_PurchaseOrder_createdDt'), 'PurchaseOrder', ['createdDt'], unique=False)
-    op.create_index(op.f('ix_PurchaseOrder_lastUpdatedDt'), 'PurchaseOrder', ['lastUpdatedDt'], unique=False)
     op.create_table('ShoppingCart',
     sa.Column('cartID', sa.Integer(), nullable=False),
     sa.Column('customerID', sa.Integer(), nullable=False),
@@ -92,6 +107,7 @@ def upgrade():
     op.create_table('ProductBatch',
     sa.Column('batchID', sa.Integer(), nullable=False),
     sa.Column('SKU', sa.Integer(), nullable=False),
+    sa.Column('producer', sa.String(length=24), nullable=False),
     sa.Column('batch_quantity', sa.Integer(), nullable=False),
     sa.Column('batch_expiration', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['SKU'], ['Product.SKU'], ),
@@ -108,11 +124,11 @@ def downgrade():
     op.drop_index(op.f('ix_User_username'), table_name='User')
     op.drop_table('User')
     op.drop_table('ShoppingCart')
-    op.drop_index(op.f('ix_PurchaseOrder_lastUpdatedDt'), table_name='PurchaseOrder')
-    op.drop_index(op.f('ix_PurchaseOrder_createdDt'), table_name='PurchaseOrder')
     op.drop_table('PurchaseOrder')
     op.drop_index(op.f('ix_Product_name'), table_name='Product')
     op.drop_table('Product')
+    op.drop_table('OutgoingTransaction')
+    op.drop_table('IncomingTransaction')
     op.drop_index(op.f('ix_Customer_email'), table_name='Customer')
     op.drop_table('Customer')
     op.drop_table('CartItem')

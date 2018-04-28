@@ -6,12 +6,10 @@ from models.user import User
 from models.customer import Customer
 from models.address import Address
 from models.creditcard import CreditCard
-from models.product import Product
-from models.productbatch import ProductBatch
 from models.shoppingcart import ShoppingCart
 from models.cartitem import CartItem
 from models.purchaseorder import PurchaseOrder
-from models.crud_operations import read_all_products
+from models.crud_operations import read_all_products, create_product_batch, create_product
 
 with main_application.app_context():
 
@@ -33,68 +31,51 @@ with main_application.app_context():
         User('guest', '1L23!hpx$W')
     ]
 
-
-    product_list = [
-        # Product(SKU, name, category, price, reorder_point, stock_quantity, storage_location)
-        Product(1234, 'Granny Apple', 'Fruit', 0.10, 100, '01-02-01'),
-        Product(7384, 'Cutie Orange', 'Fruit', 0.15, 150, '01-01-01'),
-        Product(90821, 'Awesome Sauce Hot Sauce', 'Condiment', 4.00, 50, '03-03-01'),
-        Product(2321, 'Best Protein Bagels', 'Bread', 5.00, 75, '02-06-03'),
-        Product(4326, 'Kobe Beef Burgers', 'Meat', 15.00, 50, '04-01-01')
-    ]
-
     for user in user_list:
         db.session.add(user)
 
-    for product in product_list:
-        db.session.add(product)
-
     db.session.commit()
 
 
-    # ProductBatch(self, SKU, batch_quantity, batch_expiration)
-    # date(year, month, day)
-    batch_list = [
-        ProductBatch(1234, 20, date(2018, 6, 15)),
-        ProductBatch(7384, 40, date(2018, 6, 8)),
-        ProductBatch(90821, 10, date(2019, 5, 10)),
-        ProductBatch(2321, 15, date(2018, 5, 5)),
-        ProductBatch(4326, 10, date(2018, 5, 6)),
 
-        ProductBatch(1234, 20, date(2018, 7, 15)),
-        ProductBatch(7384, 40, date(2018, 7, 8)),
-        ProductBatch(90821, 10, date(2019, 5, 10)),
-        ProductBatch(2321, 15, date(2018, 5, 15)),
-        ProductBatch(4326, 10, date(2018, 5, 11)),
+    create_product(1234, 'Granny Apple', 'Fruit', 0.10, 100, '01-02-01')
+    create_product(7384, 'Cutie Orange', 'Fruit', 0.15, 150, '01-01-01')
+    create_product(90821, 'Awesome Sauce Hot Sauce', 'Condiment', 4.00, 50, '03-03-01')
+    create_product(2321, 'Best Protein Bagels', 'Bread', 5.00, 75, '02-06-03')
+    create_product(4326, 'Kobe Beef Burgers', 'Meat', 15.00, 50, '04-01-01')
 
-        ProductBatch(1234, 20, date(2018, 8, 15)),
-        ProductBatch(7384, 40, date(2018, 8, 8)),
-        ProductBatch(90821, 10, date(2019, 5, 10)),
-        ProductBatch(2321, 15, date(2018, 5, 25)),
-        ProductBatch(4326, 10, date(2018, 5, 15)),
 
-        ProductBatch(1234, 20, date(2018, 9, 15)),
-        ProductBatch(7384, 40, date(2018, 9, 8)),
-        ProductBatch(90821, 10, date(2019, 5, 10)),
-        ProductBatch(2321, 15, date(2018, 6, 2)),
-        ProductBatch(4326, 10, date(2018, 5, 20)),
+    create_product_batch(1234, 'ProducerA', 50, 2018, 6, 15)
+    create_product_batch(7384, 'ProducerA', 75, 2018, 6, 8)
+    create_product_batch(90821, 'ProducerA', 25, 2019, 5, 10)
+    create_product_batch(2321, 'ProducerA', 15, 2018, 5, 5)
+    create_product_batch(4326, 'ProducerA', 30, 2018, 5, 6)
 
-        ProductBatch(1234, 20, date(2018, 10, 15)),
-        ProductBatch(7384, 40, date(2018, 10, 8)),
-        ProductBatch(90821, 10, date(2019, 5, 10)),
-        ProductBatch(2321, 15, date(2018, 6, 10)),
-        ProductBatch(4326, 10, date(2018, 5, 23))
-    ]
+    create_product_batch(1234, 'ProducerB', 20, 2018, 7, 15)
+    create_product_batch(7384, 'ProducerB', 40, 2018, 7, 8)
+    create_product_batch(90821, 'ProducerB', 10, 2019, 5, 10)
+    create_product_batch(2321, 'ProducerB', 15, 2018, 5, 15)
+    create_product_batch(4326, 'ProducerB', 10, 2018, 5, 11)
 
-    for batch in batch_list:
-        db.session.add(batch)
+    create_product_batch(1234, 'ProducerC', 20, 2018, 8, 15)
+    create_product_batch(7384, 'ProducerC', 40, 2018, 8, 8)
+    create_product_batch(90821, 'ProducerC', 10, 2019, 5, 10)
+    create_product_batch(2321, 'ProducerC', 15, 2018, 5, 25)
+    create_product_batch(4326, 'ProducerC', 10, 2018, 5, 15)
 
-    db.session.commit()
+    create_product_batch(1234, 'ProducerD', 20, 2018, 9, 15)
+    create_product_batch(7384, 'ProducerD', 40, 2018, 9, 8)
+    create_product_batch(90821, 'ProducerD', 10, 2019, 5, 10)
+    create_product_batch(2321, 'ProducerD', 15, 2018, 6, 2)
+    create_product_batch(4326, 'ProducerD', 10, 2018, 5, 20)
 
-    for product in read_all_products():
-        product.update_stock_quantity()
+    create_product_batch(1234, 'ProducerE', 20, 2018, 10, 15)
+    create_product_batch(7384, 'ProducerE', 40, 2018, 10, 8)
+    create_product_batch(90821, 'ProducerE', 10, 2019, 5, 10)
+    create_product_batch(2321, 'ProducerE', 15, 2018, 6, 10)
+    create_product_batch(4326, 'ProducerE', 10, 2018, 5, 23)
 
-    db.session.commit()
+
 
     ############################### Customer 1 ###############################
 
