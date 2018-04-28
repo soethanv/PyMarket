@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 
   {% block content %}
-
+<style>
+  td.details-control {
+    background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
+    cursor: pointer;
+  }
+  tr.shown td.details-control {
+      background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
+  }
+</style>
 <div class="container-fluid">
   <h1 align="center">This is the inventory page</h1>
   <div align="right" >
@@ -59,30 +67,62 @@
   </div>
 </div>
 <script>
+  function format ( d ) {
+    // `d` is the original data object for the row
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+        '<tr>'+
+            '<td>Full name:</td>'+
+            '<td>'+"something"+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Extension number:</td>'+
+            '<td>'+"something"+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Extra info:</td>'+
+            '<td>And any further details here (images etc)...</td>'+
+        '</tr>'+
+    '</table>';
+  }
+
   $(document).ready(function() {
     var inventory_data = {{inventory|tojson}};
     console.log(typeof(inventory_data))
-    $('#inventory_table').DataTable( {
+    var table = $('#inventory_table').DataTable( {
       data: inventory_data, 
       columns: [
-        {title: "SKU"},
-        {title: "Name"},
-        {title: "Reorder Point"},
-        {title: "Quantity"},
-        {title: "Options"}
+        { title: "SKU" },
+        { title: "Name" },
+        { title: "Reorder Point" },
+        { title: "Quantity" },
+        { title: "Options" }
       ],
       "columnDefs": [ {
-            "targets": -1,
-            "data": null,
-            "defaultContent": "<button>Click!</button>"
+          "targets": -1,
+          "className":      'details-control',
+          "orderable":      false,
+          "data":           null,
+          "defaultContent": ''
       } ]
 
     } );
     
-    $('#inventory_table tbody').on( 'click', 'button', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-        alert( "This works!" );
-    } );
+    // Add event listener for opening and closing details
+    $('#inventory_table tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    } );    
 
   } );
 </script>
