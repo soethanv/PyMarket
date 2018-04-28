@@ -57,6 +57,10 @@ def update_product_price(SKU, price):
 def delete_product(SKU):
     try:
         product = Product.query.filter_by(SKU=SKU).first()
+
+        for batch in product.batches:
+            db.session.delete(batch)
+        
         db.session.delete(product)
         db.session.commit()
     except Exception as err:
@@ -85,6 +89,15 @@ def read_product_batches(SKU):
 
 def read_single_batch(batchID):
     return ProductBatch.query.filter_by(batchID=batchID).first()
+
+
+def delete_single_batch(batchID):
+    try:
+        product_batch = ProductBatch.query.filter_by(batchID=batchID).first()
+        db.session.delete(product_batch)
+        db.session.commit()
+    except Exception as err:
+        raise err
 
 
 def extract_quantity_from_batch(SKU, requested_quantity):
@@ -140,7 +153,7 @@ def update_order_status(poID, new_status):
 
 
 def get_order_items(poID):
-    query = ('SELECT p.SKU, p.name, p.storage_location, p.price, ci.quantity '
+    query = ('SELECT p.SKU, p.name, p.storage_location, ci.quantity, ci.status, ci.cartItemID '
              'FROM CartItem ci, Product p, PurchaseOrder po '
              'WHERE po.poID = ' + str(poID) + ' and po.cartID = ci.cartID and ci.SKU = p.SKU'
             )
@@ -152,3 +165,12 @@ def get_order_items(poID):
         raise err
 
     return results
+
+
+def update_order_item_status(cartItemID):
+    try:
+        cart_item = CartItem.query.filter_by(cartItemID=cartItemID).first()
+        cart_item.status = 'FILLED'
+        db.session.commit()
+    except Exception as err:
+        raise err

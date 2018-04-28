@@ -7,11 +7,13 @@ class CartItem(db.Model):
     SKU = db.Column(db.Integer, nullable=False)
     cartID = db.Column(db.Integer, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(15), nullable=False)
 
     def __init__(self, SKU, cartID, quantity):
         self.SKU = SKU
         self.cartID = cartID
         self.quantity = quantity
+        self.status = 'UNFILLED'
 
     def __repr__(self):
         return '<CartItem {}, cartID: {}>'.format(self.SKU, self.cartID)
