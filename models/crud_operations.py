@@ -60,7 +60,7 @@ def delete_product(SKU):
 
         for batch in product.batches:
             db.session.delete(batch)
-        
+
         db.session.delete(product)
         db.session.commit()
     except Exception as err:
@@ -70,8 +70,8 @@ def delete_product(SKU):
 
 # Batch crud methods
 
-def create_product_batch(SKU, batch_quantity, year, month, day):
-    product_batch = ProductBatch(SKU, batch_quantity, date(year, month, day))
+def create_product_batch(SKU, producer, batch_quantity, year, month, day):
+    product_batch = ProductBatch(SKU, producer, batch_quantity, date(year, month, day))
     try:
         db.session.add(product_batch)
         db.session.commit()
@@ -146,7 +146,7 @@ def update_order_status(poID, new_status):
     try:
         order = PurchaseOrder.query.filter_by(status='UNFILLED').first()
         order.status = new_status
-        order.lastUpdatedDt = datetime.utcnow
+        order.lastUpdatedDt = datetime.utcnow()
         db.session.commit()
     except Exception as err:
         raise err

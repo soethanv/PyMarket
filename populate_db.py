@@ -55,35 +55,35 @@ with main_application.app_context():
     # ProductBatch(self, SKU, batch_quantity, batch_expiration)
     # date(year, month, day)
     batch_list = [
-        ProductBatch(1234, 20, date(2018, 6, 15)),
-        ProductBatch(7384, 40, date(2018, 6, 8)),
-        ProductBatch(90821, 10, date(2019, 5, 10)),
-        ProductBatch(2321, 15, date(2018, 5, 5)),
-        ProductBatch(4326, 10, date(2018, 5, 6)),
+        ProductBatch(1234, 'ProducerA', 20, date(2018, 6, 15)),
+        ProductBatch(7384, 'ProducerA', 40, date(2018, 6, 8)),
+        ProductBatch(90821, 'ProducerA', 10, date(2019, 5, 10)),
+        ProductBatch(2321, 'ProducerA', 15, date(2018, 5, 5)),
+        ProductBatch(4326, 'ProducerA', 10, date(2018, 5, 6)),
 
-        ProductBatch(1234, 20, date(2018, 7, 15)),
-        ProductBatch(7384, 40, date(2018, 7, 8)),
-        ProductBatch(90821, 10, date(2019, 5, 10)),
-        ProductBatch(2321, 15, date(2018, 5, 15)),
-        ProductBatch(4326, 10, date(2018, 5, 11)),
+        ProductBatch(1234, 'ProducerB', 20, date(2018, 7, 15)),
+        ProductBatch(7384, 'ProducerB', 40, date(2018, 7, 8)),
+        ProductBatch(90821, 'ProducerB', 10, date(2019, 5, 10)),
+        ProductBatch(2321, 'ProducerB', 15, date(2018, 5, 15)),
+        ProductBatch(4326, 'ProducerB', 10, date(2018, 5, 11)),
 
-        ProductBatch(1234, 20, date(2018, 8, 15)),
-        ProductBatch(7384, 40, date(2018, 8, 8)),
-        ProductBatch(90821, 10, date(2019, 5, 10)),
-        ProductBatch(2321, 15, date(2018, 5, 25)),
-        ProductBatch(4326, 10, date(2018, 5, 15)),
+        ProductBatch(1234, 'ProducerC', 20, date(2018, 8, 15)),
+        ProductBatch(7384, 'ProducerC', 40, date(2018, 8, 8)),
+        ProductBatch(90821, 'ProducerC', 10, date(2019, 5, 10)),
+        ProductBatch(2321, 'ProducerC', 15, date(2018, 5, 25)),
+        ProductBatch(4326, 'ProducerC', 10, date(2018, 5, 15)),
 
-        ProductBatch(1234, 20, date(2018, 9, 15)),
-        ProductBatch(7384, 40, date(2018, 9, 8)),
-        ProductBatch(90821, 10, date(2019, 5, 10)),
-        ProductBatch(2321, 15, date(2018, 6, 2)),
-        ProductBatch(4326, 10, date(2018, 5, 20)),
+        ProductBatch(1234, 'ProducerD', 20, date(2018, 9, 15)),
+        ProductBatch(7384, 'ProducerD', 40, date(2018, 9, 8)),
+        ProductBatch(90821, 'ProducerD', 10, date(2019, 5, 10)),
+        ProductBatch(2321, 'ProducerD', 15, date(2018, 6, 2)),
+        ProductBatch(4326, 'ProducerD', 10, date(2018, 5, 20)),
 
-        ProductBatch(1234, 20, date(2018, 10, 15)),
-        ProductBatch(7384, 40, date(2018, 10, 8)),
-        ProductBatch(90821, 10, date(2019, 5, 10)),
-        ProductBatch(2321, 15, date(2018, 6, 10)),
-        ProductBatch(4326, 10, date(2018, 5, 23))
+        ProductBatch(1234, 'ProducerE', 20, date(2018, 10, 15)),
+        ProductBatch(7384, 'ProducerE', 40, date(2018, 10, 8)),
+        ProductBatch(90821, 'ProducerE', 10, date(2019, 5, 10)),
+        ProductBatch(2321, 'ProducerE', 15, date(2018, 6, 10)),
+        ProductBatch(4326, 'ProducerE', 10, date(2018, 5, 23))
     ]
 
     for batch in batch_list:
