@@ -196,3 +196,14 @@ def update_order_item_status(cartItemID):
     except Exception as err:
         db.session.rollback()
         raise err
+
+
+
+# Transaction crud_operations
+
+def get_all_incoming_transactions():
+    return IncomingTransaction.query.all()
+
+
+def get_all_outgoing_transactions():
+    return OutgoingTransaction.query.all()
