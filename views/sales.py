@@ -11,24 +11,29 @@ NumRows = 0
 def sales():
     sales = get_sales()
     salesLen = len(sales)
-    return render_template('sales.html', title='Sales Orders', sales=sales)
-
-def increment(numAdded):
-	global NumRows
-	NumRows += numAdded
-	return NumRows
+    inventory = get_inventory()
+    return render_template('sales.html', title='Sales Orders', sales=sales, inventory=inventory)
 
 
 def get_sales():
 	sales = []
+	sales.append(('1111', 'Carter',  'Food', 'NQ324'))
+	sales.append(('2111', 'Gus',  'Food', 'LQ324'))
+	sales.append(('3111', 'Dalton',  'Food', 'TQ324'))
+	sales.append(('4111', 'Julia',  'Food', 'ZQ324'))
+	sales.append(('5111', 'Soe',  'Food', 'WQ324'))
+	return sales
+
+def get_inventory():
 	inventory = []
 	inventory.append([123, 'Cabbage', 'Vegetables', 200, 233])
-	inventory.append([456, 'Wheat', 'Grain', 1000, 3000])
-	inventory.append([456, 'Barley', 'Grain', 1000, 3000])
-	inventory.append([456, 'Apple', 'Fruit', 100, 200])
-	sales.append((1111, 'Carter',  'Food', 'NQ324', inventory))
-	sales.append((2111, 'Gus',  'Food', 'LQ324', inventory))
-	sales.append((3111, 'Dalton',  'Food', 'TQ324', inventory))
-	sales.append((4111, 'Julia',  'Food', 'ZQ324', inventory))
-	sales.append((5111, 'Soe',  'Food', 'WQ324', inventory))
-	return sales
+	inventory.append([421, 'Wheat', 'Grain', 1000, 3000])
+	inventory.append([344, 'Barley', 'Grain', 1000, 3000])
+	inventory.append([424, 'Apple', 'Fruit', 100, 200])
+	return inventory
+
+
+#def filled():
+
+
+

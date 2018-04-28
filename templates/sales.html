@@ -1,56 +1,19 @@
 {% extends "base.html" %}
 
   {% block content %}
+  <style>
+  td.details-control {
+    background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
+    cursor: pointer;
+  }
+  tr.shown td.details-control {
+      background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
+      color:red;
+  }
+</style>
 
 <div class="container-fluid">
-  <h1 align="center">This is the inventory page</h1>
-  <!---<div align="right" >
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" data-whatever="@Add">
-      Add
-    </button>
-    <a href="{{ url_for('user_auth.logout') }}">Logout</a>
-
-  </div>-->
-  <!--Add Button Model
-  <div class="modal fade" id='addModal' tabindex="1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addModal">Add new product</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form method="ADD">
-            <div class="form-row align-items-center">
-              <div class="col-auto">
-                <label class="sr-only" for="validationSKU">SKU</label>
-                <input type="text" class="form-control mb-2" id="validationSKU" placeholder="SKU" required pattern="[0-9]{3}" maxlength="3">
-              </div>
-              <div class="col-auto">
-                <label class="sr-only" for="validationName">Name</label>
-                <input type="text" class="form-control mb-2" id="validationName" placeholder="Product Name" required pattern="[A-Za-z]+" maxlength="14">
-              </div>
-              <div class="col-auto">
-                <label class="sr-only" for="validationRP">Reorder Point</label>
-                <input type="text" class="form-control mb-2" id="validationRP" placeholder="200" required min="1" max="8" pattern="[0-9]*">
-              </div>
-              <div class="col-auto">
-                <label class="sr-only" for="validationQ">Quantity</label>
-                <input type="text" class="form-control mb-2" id="validationQ" placeholder="500" required min="1" max="8" pattern="[0-9]*">
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary">Submit</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  End of Add Button Model-->
+  <h1 align="center">This is the Sales page</h1>
 
   <div class="container">
     <div class="table-responsive">
@@ -60,32 +23,77 @@
   </div>
 </div>
 <script>
+
+/*function format ( d ) {
+    // `d` is the original data object for the row
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+        '<tr>'+
+            '<td>Full name:</td>'+
+            '<td>'+"something"+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Extension number:</td>'+
+            '<td>'+"something"+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Extra info:</td>'+
+            '<td>And any further details here (images etc)...</td>'+
+        '</tr>'+
+    '</table>';
+  }*/
+
+  function format ( d ) {
+    // `d` is the original data object for the row
+    var str = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
+    str += 	'<tr>'+ 
+    		'<td>'+'SKU'+'</td>'+
+        	'<td>'+'Name'+'</td>'+
+        	'<td>'+'Location'+'</td>'+
+        	'<td>'+'Quantity'+'</td>'+
+        	'<td>'+'Status'+'</td>'
+     		+'</tr>';
+    {% for product in inventory %}
+    str +=	'<tr>'+
+       		'<td>'+'{{product[0]}}'+'</td>'+
+        	'<td>'+'{{product[1]}}'+'</td>'+
+        	'<td>'+'{{product[2]}}'+'</td>'+
+        	'<td>'+'{{product[4]}}'+'</td>'+
+        	'<td><input id="{{product[0]}}'+ d[0] + '" type="checkbox" onclick="toggleCheckbox({{product[0]}},' + d[0] + ')">'+'</td>'+
+        	'</tr>';
+    {% endfor %}
+
+    str += '</table>';
+
+    return str;
+  }
+
   $(document).ready(function() {
     var sales_data = {{sales|tojson}};
-    var product_data = {{sales[4]|tojson}};
-    $('#sales_table').DataTable( {
+    var inventory_data = {{inventory|tojson}}
+    console.log(typeof(sales_data))
+    var table = $('#sales_table').DataTable( {
       data: sales_data, 
       columns: [
-        {title: "Order"},
-        {title: "Name"},
-        {title: "Channel"},
-        {title: "Reference Order"},
-        {title: "Options"}
-        
+        { title: "Order ID" },
+        { title: "Customer ID" },
+        { title: "Created Date" },
+        { title: "Status" },
+        { title: "Options"}
       ],
       "columnDefs": [ {
-            "targets": -1,
-            "data": null,
-            "defaultContent": "<button>Products</button>"
+          "targets": -1,
+          "className":      'details-control',
+          "orderable":      false,
+          "data":           null,
+          "defaultContent": '',
+          "render": function () {
+           return '<i class="fa a-plus-square" aria-hidden="true"></i>';
+                     }
       } ]
 
     } );
-
     
-    //$('#sales_table tbody').on( 'click', 'button', function () {
-      //  var data = table.row( $(this).parents('tr') ).data();
-        //alert( "This works!" );
-    //} );
+  
 
     $('#sales_table tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
@@ -103,6 +111,36 @@
         }
     } );
 
+    
+
+    /*$('input[name=checkbox]').change(function(){
+    if($(this).is(':checked')) {
+        // Checkbox is checked..
+        alert("The checkbox was checked.");
+    } else {
+        // Checkbox is not checked..
+        alert("The checkbox was unchecked.");
+    }
+});*/
+
+/*document.addEventListener("DOMContentLoaded", function (event) {
+    var _selector = document.querySelector('input[name=checkbox]');
+    _selector.addEventListener('change', function (event) {
+        if (_selector.checked) {
+            alert("The checkbox was checked.");
+        } else {
+            alert("The checkbox was unchecked.");
+        }
+    });
+});*/
+
   } );
+
+  function toggleCheckbox(productID, SKU)
+ {
+ 	var stringy = "" + productID + SKU;
+ 	
+ 	document.getElementById(stringy).disabled = true;
+ }
 </script>
 {% endblock %}
