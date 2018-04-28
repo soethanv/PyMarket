@@ -8,6 +8,8 @@ from models.cartitem import CartItem
 from models.product import Product
 from models.productbatch import ProductBatch
 from models.purchaseorder import PurchaseOrder
+from models.incomingtransaction import IncomingTransaction
+from models.outgoingtransaction import OutgoingTransaction
 
 model_classes = {
     'User': User,
@@ -19,5 +21,7 @@ model_classes = {
     'CartItem': CartItem,
     'Product': Product,
     'ProductBatch': ProductBatch,
-    'PurchaseOrder': PurchaseOrder
+    'PurchaseOrder': PurchaseOrder,
+    'IncomingTransaction': IncomingTransaction,
+    'OutgoingTransaction': OutgoingTransaction
 }
