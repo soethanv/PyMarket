@@ -78,14 +78,35 @@
     </div>
     <div class="table-responsive">
         <table id="inventory_table" style="width:100%" class="table table-striped table-bordered"></table>
+        <form action="" method="POST"></form>
     </div>
   </div>
 </div>
 <script>
   function format ( d ) {
     // `d` is the original data object for the row
+    var data = d;
+    $.ajax({
+              type: "POST",
+              url: "/getsku",
+              data: {row_sku: data[0]},
+              dataType: "text",
+              success: function(response) {
+                  console.log("success");
+              },
+              error: function(err) {
+                  console.log(err);
+              }
+          });
+
     var table_str = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
-    {% for batch in get_batches_with(4326) %}
+    table_str += '<tr>'+
+                    '<th>'+"Batch ID"+"</th>"+
+                    '<th>'+"Quantity"+"</th>"+
+                    '<th>'+"Expiration Date"+"</th>"+
+                    '<th>'+"Option"+"</th>";
+
+    {% for batch in get_batches_with() %}
       {% if check_expiration_date(batch.batch_expiration) == True  %}
         table_str += '<tr class="bg-warning">';
       {% else %}
@@ -96,6 +117,7 @@
                         //'<td>' + '{{batch.producer}}' + '</td>'+
                         '<td>' + '{{batch.batch_quantity}}' + '</td>'+
                         '<td>' + '{{batch.batch_expiration}}' + '</td>'+
+                        '<td>' + 'X' + '</td>'+
                     '</tr>'; 
     {% endfor %}
     table_str += "</table>";
@@ -159,6 +181,8 @@
         var tr = $(this).closest('tr');
         var row = table.row( tr );
 
+        var data = row.data();
+
         if ( row.child.isShown() ) {
             // This row is already open - close it
             row.child.hide();
@@ -166,6 +190,7 @@
         }
         else {
             // Open this row
+            
             row.child( format(row.data()) ).show();
             tr.addClass('shown');
         }
