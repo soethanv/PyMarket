@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+  {% block content %}
+<style>
+  td.details-control {
+    background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
+    cursor: pointer;
+  }
+  tr.shown td.details-control {
+      background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
+  }
+</style>
+<div class="container-fluid">
+  <h1 align="center">{{ title }}</h1>
+  <div align="right" >
+    <a href="{{ url_for('user_auth.logout') }}">Logout</a>
+
+  </div>
+
+
+  <div class="container">
+    <div class="table-responsive">
+        <table id="transaction_table" style="width:100%" class="table table-striped table-bordered"></table>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    var trans_data = {{transactions|tojson}};
+    var table = $('#transaction_table').DataTable( {
+      data: trans_data,
+
+      {% if display == 'INCOMING' %}
+          columns: [
+              { title: "BatchID" },
+              { title: "SKU" },
+              { title: "Producer" },
+              { title: "Transaction Date" }
+          ]
+      {% else %}
+          columns: [
+              { title: "Transaction ID" },
+              { title: "Customer ID" },
+              { title: "SKU" },
+              { title: "Quantity" },
+              { title: "From Batches" },
+              { title: "Transaction Date" }
+          ]
+      {% endif %}
+    } );
+
+  } );
+</script>
+{% endblock %}
