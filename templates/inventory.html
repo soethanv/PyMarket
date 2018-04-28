@@ -13,9 +13,6 @@
 <div class="container-fluid">
   <h1 align="center">This is the inventory page</h1>
   <div align="right" >
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" data-whatever="@Add">
-      Add
-    </button>
     <a href="{{ url_for('user_auth.logout') }}">Logout</a>
 
   </div>
@@ -61,6 +58,11 @@
   <!--End of Add Button Model-->
 
   <div class="container">
+    <div align="left">
+      <button style="margin: 8px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" data-whatever="@Add">
+        Add Product
+      </button>
+    </div>
     <div class="table-responsive">
         <table id="inventory_table" style="width:100%" class="table table-striped table-bordered"></table>
     </div>
@@ -69,14 +71,15 @@
 <script>
   function format ( d ) {
     // `d` is the original data object for the row
+    var inventory_data = {{inventory|tojson}};
     return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
         '<tr>'+
             '<td>Full name:</td>'+
-            '<td>'+"something"+'</td>'+
+            '<td>' + "something" + '</td>'+
         '</tr>'+
         '<tr>'+
             '<td>Extension number:</td>'+
-            '<td>'+"something"+'</td>'+
+            '<td>' + "something" + '</td>'+
         '</tr>'+
         '<tr>'+
             '<td>Extra info:</td>'+
@@ -90,20 +93,38 @@
     console.log(typeof(inventory_data))
     var table = $('#inventory_table').DataTable( {
       data: inventory_data, 
-      columns: [
-        { title: "SKU" },
-        { title: "Name" },
-        { title: "Reorder Point" },
-        { title: "Quantity" },
-        { title: "Options" }
-      ],
-      "columnDefs": [ {
-          "targets": -1,
+      
+      "columns": [ {
+          "targets": 0,
           "className":      'details-control',
           "orderable":      false,
-          "data":           null,
+          "data": null,
           "defaultContent": ''
-      } ]
+        },
+        {
+          title: "SKU",
+          "data": 0
+        },
+        {
+          title: "Name",
+          "data": 1
+        },
+        {
+          title: "Reorder Point",
+          "data": 2
+        },
+        {
+          title: "Quantity",
+          "data": 3
+        },
+        {
+            "targets": -1,
+            title: "Options",
+            "data": null,
+            "defaultContent": '<button type="button" class="btn btn-primary">Edit</button>'
+            + '<button type="button" class="btn btn-danger" style="margin-left:10px" >Delete</button>'
+        }
+      ]
 
     } );
     
@@ -123,7 +144,6 @@
             tr.addClass('shown');
         }
     } );    
-
   } );
 </script>
 {% endblock %}
