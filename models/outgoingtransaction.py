@@ -9,15 +9,14 @@ class OutgoingTransaction(db.Model):
     SKU = db.Column(db.Integer, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     from_batches = db.Column(db.String(128), nullable=False)
-    transactionDate = db.Column(db.DateTime, nullable=False)
+    transactionDate = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
 
-    def __init__(self, customerID, SKU, quantity, from_batches, transactionDate):
+    def __init__(self, customerID, SKU, quantity, from_batches):
         self.customerID = customerID
         self.SKU = SKU
         self.quantity = quantity
         self.from_batches = from_batches
-        self.transactionDate = transactionDate
 
 
     def __repr__(self):

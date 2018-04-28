@@ -1,17 +1,17 @@
 from setup import db
 from sqlalchemy import text
-from datetime import datetime
+from datetime import datetime, date
 from models.product import Product
 from models.productbatch import ProductBatch
 from models.purchaseorder import PurchaseOrder
-
-# TODO: make exception handling less generic
+from models.incomingtransaction import IncomingTransaction
+from models.outgoingtransaction import OutgoingTransaction
 
 
 # Product crud methods
 
-def create_product(SKU, name, category, price, reorder_point, stock_quantity):
-    product = Product(SKU, name, category, price, reorder_point, stock_quantity)
+def create_product(SKU, name, category, price, reorder_point, storage_location):
+    product = Product(SKU, name, category, price, reorder_point, storage_location)
     try:
         db.session.add(product)
         db.session.commit()
@@ -75,8 +75,13 @@ def create_product_batch(SKU, producer, batch_quantity, year, month, day):
     try:
         db.session.add(product_batch)
         db.session.commit()
-        product = read_single_product(SKU)
-        product.update_stock_quantity()
+
+        # TODO: make sure product_batch has an ID at this point, verify this gets logged in db
+        db.session.add(IncomingTransaction(product_batch.batchID, SKU, producer))
+
+        product = Product.query.filter_by(SKU=SKU).first()
+        product.stock_quantity = product.stock_quantity + batch_quantity
+        # product.update_stock_quantity()
         db.session.commit()
     except Exception as err:
         raise err
@@ -100,7 +105,7 @@ def delete_single_batch(batchID):
         raise err
 
 
-def extract_quantity_from_batch(SKU, requested_quantity):
+def extract_quantity_from_batch(customerID, SKU, requested_quantity):
     '''
         Method doesn't actually return items from the batch,
         but just decrements the requested_quantity from the
@@ -118,6 +123,8 @@ def extract_quantity_from_batch(SKU, requested_quantity):
     batches = product.batches
     batches = sorted(batches, key=lambda x: x.batch_expiration)
 
+    from_batches_str = ''
+
     for batch in batches:
         if requested_quantity == 0:
             break
@@ -125,13 +132,19 @@ def extract_quantity_from_batch(SKU, requested_quantity):
         if batch.batch_quantity <= requested_quantity:
             # batch is too small or just the right amount
             requested_quantity -= batch.batch_quantity
+            from_batches_str += (' ' + str(batch.batchID))
             db.session.delete(batch)
         else:
             # batch has more than the requested_quantity
             batch.batch_quantity -= requested_quantity
+            from_batches_str += (' ' + str(batch.batchID))
             break
 
+    db.session.commit()
 
+    # TODO: verify this is working
+    out_transaction = OutgoingTransaction(customerID, SKU, requested_quantity, from_batches_str)
+    db.session.add(out_transaction)
     db.session.commit()
 
 
@@ -153,7 +166,7 @@ def update_order_status(poID, new_status):
 
 
 def get_order_items(poID):
-    query = ('SELECT p.SKU, p.name, p.storage_location, ci.quantity, ci.status, ci.cartItemID '
+    query = ('SELECT p.SKU, p.name, p.storage_location, ci.quantity, ci.status, ci.cartItemID, po.customerID '
              'FROM CartItem ci, Product p, PurchaseOrder po '
              'WHERE po.poID = ' + str(poID) + ' and po.cartID = ci.cartID and ci.SKU = p.SKU'
             )
