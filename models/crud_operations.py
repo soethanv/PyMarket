@@ -62,6 +62,9 @@ def delete_product(SKU):
     try:
         product = Product.query.filter_by(SKU=SKU).first()
 
+        if product is None:
+            raise Exception('Product with ' + str(SKU) + ' does not exist')
+
         for batch in product.batches:
             db.session.delete(batch)
 
@@ -71,6 +74,9 @@ def delete_product(SKU):
         db.session.rollback()
         raise err
 
+
+def get_reorder_items():
+    return Product.query.filter(Product.stock_quantity <= Product.reorder_point).all()
 
 
 # Batch crud methods
@@ -95,6 +101,9 @@ def create_product_batch(SKU, producer, batch_quantity, year, month, day):
 
 def read_product_batches(SKU):
     product = Product.query.filter_by(SKU=SKU).first()
+    if product is None:
+        return None
+
     return product.batches
 
 
@@ -120,6 +129,9 @@ def extract_quantity_from_batch(customerID, SKU, requested_quantity):
         requested amount is greated than the stock_quantity
     '''
     product = Product.query.filter_by(SKU=SKU).first()
+
+    if product is None:
+        raise Exception('Product with ' + str(SKU) + ' does not exist')
 
     if product.stock_quantity < requested_quantity:
         raise Exception('Not enough stock_quantity to fill order!')
@@ -152,6 +164,24 @@ def extract_quantity_from_batch(customerID, SKU, requested_quantity):
     out_transaction = OutgoingTransaction(customerID, SKU, requested_quantity, from_batches_str)
     db.session.add(out_transaction)
     db.session.commit()
+
+
+def get_expiring_batches():
+    now = datetime.utcnow()
+
+    batches = ProductBatch.query.all()
+
+    if batches is None:
+        return None
+
+    expiring_batches = []
+    for bt in batches:
+        diff = bt.batch_expiration - now
+
+        if diff.days <= 7:
+            expiring_batches.append(bt)
+
+    return expiring_batches
 
 
 
