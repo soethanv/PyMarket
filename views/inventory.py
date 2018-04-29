@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, jsonify
 from flask_login import login_required
 from models.crud_operations import read_all_products, read_product_batches, read_single_product, \
-create_product, update_product_name, update_product_reorder_point, update_product_price, delete_product
+create_product, update_product_name, update_product_reorder_point, update_product_price, delete_product, \
+delete_single_batch
 from datetime import datetime
 import json
 from flask import jsonify
@@ -51,12 +52,21 @@ def handle_edit():
 
 
 @bp.route('/inventorydelete', methods=['POST'])
-def handle_delete():
+def handle_delete_product():
     print('I am deleting a product')
     SKU = request.form['row_sku']
     print(SKU)
-    # delete_product(SKU)
+    delete_product(SKU)
     return jsonify(status='success')
+
+@bp.route('/batchesdelete', methods=['POST'])
+def handle_delete_batch():
+    print('I am deleting a product')
+    batchID= request.form['row_id']
+    print(batchID)
+    delete_single_batch(batchID)
+    return jsonify(status='success')
+
 
 def get_inventory():
     inventory = []
