@@ -14,12 +14,12 @@ sku = None
 @login_required
 def inventory():
     inventory = get_inventory()
-    print("jsonify")
+    # print("jsonify")
     return render_template('inventory.html', title='Inventory', inventory=inventory, check_expiration_date=check_expiration_date)
 
 @bp.route('/inventoryadder', methods=['POST'])
 def handle_add_product():
-    print('I am adding a product')
+    # print('I am adding a product')
     SKU = request.form['SKU']
     name = request.form['Name']
     reorder_point = request.form['RP']
@@ -31,24 +31,24 @@ def handle_add_product():
 
 @bp.route('/batchesadd', methods=['POST'])
 def handle_add_batch():
-    print('I am adding a batch')
+    # print('I am adding a batch')
     SKU = request.form['batchSKU']
     producer = request.form['Producer']
     stock = request.form['Quantity']
     day = request.form['Day']
     month = request.form['Month']
     year = request.form['Year']
-    print(SKU+' '+producer+' '+stock+' '+day+' '+month+' '+year)
+    # print(SKU+' '+producer+' '+stock+' '+day+' '+month+' '+year)
     create_product_batch(SKU, producer, int(stock), int(year), int(month), int(day))
     return redirect('/inventory', code=302)
 
 @bp.route('/inventoryeditor', methods=['POST'])
 def handle_edit():
-    print('I am editing a product')
+    # print('I am editing a product')
     SKU = request.form['SKU']
     # Compare with database
     product = read_single_product(SKU)
-    print(product)
+    # print(product)
     name = request.form['Name']
     if product.name != name:
         update_product_name(SKU, name)
@@ -64,17 +64,17 @@ def handle_edit():
 
 @bp.route('/inventorydelete', methods=['POST'])
 def handle_delete_product():
-    print('I am deleting a product')
+    # print('I am deleting a product')
     SKU = request.form['row_sku']
-    print(SKU)
+    # print(SKU)
     delete_product(SKU)
     return jsonify(status='success')
 
 @bp.route('/batchesdelete', methods=['POST'])
 def handle_delete_batch():
-    print('I am deleting a batch')
+    # print('I am deleting a batch')
     batchID= request.form['row_id']
-    #print(batchID)
+    # print(batchID)
     delete_single_batch(batchID)
     return jsonify(status='success')
 
@@ -90,7 +90,7 @@ def get_sku():
     sku = request.form['row_sku']
     #print("batch data before printing")
     batch_data = get_batches_with(sku)
-    print(batch_data)
+    #print(batch_data)
     return jsonify(status="success", data=batch_data)
 
 def get_batches_with(SKU):
