@@ -88,16 +88,12 @@ def get_inventory():
 @bp.route('/getbatchdata', methods=["GET", "POST"])
 def get_sku():
     sku = request.form['row_sku']
-    #print("batch data before printing")
     batch_data = get_batches_with(sku)
-    #print(batch_data)
     return jsonify(status="success", data=batch_data)
 
 def get_batches_with(SKU):
-    # need to handle this more efficiently
     if SKU is None:
         SKU = 1234
-    #print("Called get_batches_with SKU " + str(SKU))
     batch = read_product_batches(SKU)
     batches = []
     for bat in batch:
