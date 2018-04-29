@@ -83,16 +83,8 @@
                 <input type="text" name="RP" class="form-control mb-2" id="editRP" required min="1" max="8" pattern="[0-9]*">
               </div>
               <div class="col-auto">
-                <label for="editQ">Quantity</label>
-                <input type="text" name="Quantity" class="form-control mb-2" id="editStock" required min="1" max="8" pattern="[0-9]*">
-              </div>
-              <div class="col-auto">
                 <label for="editPrice">Price</label>
                 <input type="text" name="Price" class="form-control mb-2" id="editPrice" required min="1" max="8" pattern="[0-9]*.{1}[0-9]*">
-              </div>
-              <div class="col-auto">
-                <label for="editCat">Category</label>
-                <input type="text" name="Category" class="form-control mb-2" id="editCat" required pattern="[A-Za-z]+" maxlength="14">
               </div>
             </div>
             <div class="modal-footer">
@@ -242,10 +234,8 @@
             var data = row.data();
             document.getElementById('editSKU').value = data[0]
             document.getElementById('editName').value = data[1];
-            document.getElementById('editCat').value = data[2];
             document.getElementById('editPrice').value = data[3];
             document.getElementById('editRP').value = data[4];
-            document.getElementById('editStock').value = data[5];
         }
     });
 

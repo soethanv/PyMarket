@@ -45,8 +45,6 @@ def handle_edit():
     price = request.form['Price']
     if product.price != price:
         update_product_price(SKU, price)
-    category = request.form['Category']
-    stock = request.form['Quantity']
     return redirect('/inventory', code=302)
 
 
