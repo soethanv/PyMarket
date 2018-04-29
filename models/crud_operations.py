@@ -114,6 +114,8 @@ def read_single_batch(batchID):
 def delete_single_batch(batchID):
     try:
         product_batch = ProductBatch.query.filter_by(batchID=batchID).first()
+        product = product_batch.product
+        product.stock_quantity = product.stock_quantity - product_batch.batch_quantity
         db.session.delete(product_batch)
         db.session.commit()
     except Exception as err:
@@ -133,11 +135,7 @@ def extract_quantity_from_batch(customerID, SKU, requested_quantity):
     if product is None:
         raise Exception('Product with ' + str(SKU) + ' does not exist')
 
-
-
     if product.stock_quantity < requested_quantity:
-        print(product.stock_quantity)
-        print(requested_quantity)
         raise Exception('Not enough stock_quantity to fill order!')
 
     product.stock_quantity = product.stock_quantity - requested_quantity
