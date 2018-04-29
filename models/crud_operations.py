@@ -114,6 +114,8 @@ def read_single_batch(batchID):
 def delete_single_batch(batchID):
     try:
         product_batch = ProductBatch.query.filter_by(batchID=batchID).first()
+        product = product_batch.product
+        product.stock_quantity = product.stock_quantity - product_batch.batch_quantity
         db.session.delete(product_batch)
         db.session.commit()
     except Exception as err:
