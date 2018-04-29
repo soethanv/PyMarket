@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
   {% block content %}
+
   <style>
   td.details-control {
     background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
@@ -24,9 +25,36 @@
 </div>
 <script>
 
+//Listener for checkbx
+function toggleCheckbox(productID, SKU, quantity)
+{
+  var stringy = "" + productID + SKU;
+  
+  document.getElementById(stringy).disabled = true;
+
+  $.ajax({
+              type: "POST",
+              url: "/fillproductdata",
+              data: {row_SKU: SKU, row_quantity: quantity},
+              dataType: "text",
+              success: function(response) {
+                console.log("ajax success");
+                
+                var obj = JSON.parse(response);
+                
+                div
+                  .html( format_table(obj.data, data[0]) )
+                  
+              },
+              error: function(err) {
+                  console.log(err);
+              }
+          });
 
 
-  function format ( d ) {
+}
+
+function format_table( d, OrderID ) {
 
     // `d` is the original data object for the row
     var str = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
@@ -38,35 +66,82 @@
         	'<td>'+'Status'+'</td>'
      		+'</tr>';   
 
-    {% for product in inventory %}
+    var i;
+    for(i=0; i < d.length; i++)
+    {
     str +=	'<tr>'+
-       		'<td>'+'{{product[0]}}'+'</td>'+
-        	'<td>'+'{{product[1]}}'+'</td>'+
-        	'<td>'+'{{product[2]}}'+'</td>'+
-        	'<td>'+'{{product[4]}}'+'</td>'+
-        	'<td><input id="{{product[0]}}'+ d[0] + '" type="checkbox" onclick="toggleCheckbox({{product[0]}},' + d[0] + ')">'+'</td>'+
+       		'<td>'+d[i][0]+'</td>'+
+        	'<td>'+d[i][1]+'</td>'+
+        	'<td>'+d[i][2]+'</td>'+
+        	'<td>'+d[i][3]+'</td>'+
+        	'<td><input id="'+ OrderID +''+ d[i][0] + '" type="checkbox" onclick="toggleCheckbox('+ OrderID +',' + d[i][0] + ','+ d[i][3] +')">'+'</td>'+
         	'</tr>';
-    {% endfor %}
-
+    }
     str += '</table>';
+
+   
 
     return str;
   }
 
+  function getProductTable ( data ) {
+
+     var div = $('<div/>')
+        .addClass( 'loading' )
+        .text( 'Loading...' );
+
+    
+
+    var product_data;
+    $.ajax({
+              type: "POST",
+              url: "/getproductdata",
+              data: {row_OrderId: data[0]},
+              dataType: "text",
+              success: function(response) {
+                console.log("ajax success");
+                
+                var obj = JSON.parse(response);
+                
+                div
+                  .html( format_table(obj.data, data[0]) )
+                  .removeClass( 'Loading' );
+              },
+              error: function(err) {
+                  console.log(err);
+              }
+          });
+      return div;
+  }
+
   $(document).ready(function() {
     var sales_data = {{sales|tojson}};
-    var inventory_data = {{inventory|tojson}}
-    console.log(typeof(sales_data))
+   
+    console.log(typeof(sales_data));
+    console.log(sales_data);
     var table = $('#sales_table').DataTable( {
       data: sales_data, 
-      columns: [
-        { title: "Order ID" },
-        { title: "Customer ID" },
-        { title: "Created Date" },
-        { title: "Status" },
-        { title: "Options"}
-      ],
-      "columnDefs": [ {
+
+      "columns": [ {
+          "targets": 0,
+          "className":      'details-control',
+          "data": null,
+          "defaultContent": ''
+        },
+       
+        { title: "Order ID", "data": 0},
+        { title: "Customer ID",  "data": 1},
+        { title: "Created Date",  "data": 2}, 
+        {
+            "targets": -1,
+            title: "Status",
+            "data": null,
+            "defaultContent": '<button type="button" name="filledButton" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#filledModal">Filled</button>'
+           
+        }
+      
+      
+      /*"columnDefs": [ {
           "targets": -1,
           "className":      'details-control',
           "orderable":      false,
@@ -75,8 +150,8 @@
           "render": function () {
            return '<i class="fa a-plus-square" aria-hidden="true"></i>';
                      }
-      } ]
-
+      } ]*/
+      ]
     } );
     
   
@@ -92,18 +167,13 @@
         }
         else {
             // Open this row
-            row.child( format(row.data()) ).show();
+            
+            row.child( getProductTable(row.data()) ).show();
             tr.addClass('shown');
         }
     } );
 
   } );
 
-  function toggleCheckbox(productID, SKU)
- {
- 	var stringy = "" + productID + SKU;
- 	
- 	document.getElementById(stringy).disabled = true;
- }
 </script>
 {% endblock %}

@@ -3,18 +3,20 @@ from flask_login import login_required
 from models.crud_operations import read_all_orders, get_order_items, update_order_status
 from datetime import datetime
 from flask import request
+import json
+from flask import jsonify
 
 bp = Blueprint('sales', __name__, template_folder='templates', static_folder='static')
 
-NumRows = 0
+poID = None
 
 @bp.route('/sales')
 @login_required
 def sales():
     sales = get_orders()
     salesLen = len(sales)
-    inventory = get_inventory(sales)
-    return render_template('sales.html', title='Sales Orders', sales=sales, inventory=inventory)
+    #inventory = get_inventory(sales)
+    return render_template('sales.html', title='Sales Orders', sales=sales)
 
 def get_orders():
 	order = []
@@ -23,29 +25,37 @@ def get_orders():
 
 	return order
 
-def get_inventory(salesparm):
-	inventory = []
-	hold = []
-	inv_dict = {}
-	count = 0
-	for allproduct in salesparm:
-		count += 1
-		poID = allproduct[0]
-		hold = get_order_items(poID)
-		inv_dict[poID] = hold
-		for oneproduct in hold:
-			inventory.append(list(oneproduct))
-		
-			
-	print(inv_dict[1])
-	print(inv_dict)
+
+@bp.route('/getproductdata', methods=["GET", "POST"])
+def get_inventory():
+	poID = request.form['row_OrderId']
+	print("Product Data before printing")
+	product_data = get_products_with(poID)
+	print(product_data)
+	return jsonify(status="success", data=product_data)
+
+
+
+def get_products_with(podID):
+	if podID is None:
+		podID = 1
+	print("Called get_products_with poId " + str(podID))
+	product = get_order_items(podID)
+	products = []
+	for prod in product:
+		products.append((prod[0], prod[1], prod[2], prod[3]))
+	return products	
+
+
+@bp.route('/fillproductdata', methods=["GET", "POST"])
+def filled():
+	SKU = request.form['row_SKU']
+	quantity = request.form['row_quantity']
+	print("\n\nTaking out "+ quantity)
+	print(" for SKU " + SKU)
+	print("\n\n")
 	
-	#inventory.append([344, 'Barley', 'Grain', 1000, 3000])
-	#inventory.append([424, 'Apple', 'Fruit', 100, 200])
-	return inventory;
-
-
-#def filled():
-	#update_order_status()
+	
+	
 
 
