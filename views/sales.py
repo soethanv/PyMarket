@@ -51,11 +51,22 @@ def get_products_with(podID):
 def filled():
 	SKU = request.form['row_SKU']
 	quantity = request.form['row_quantity']
+	OrderId = request.form['row_OrderId']
 	print("\n\nTaking out "+ quantity)
-	print(" for SKU " + SKU)
+	print("for SKU " + SKU)
+	print("with Order Id " + OrderId)
 	print("\n\n")
-	
-	
+	return jsonify(status='success')
+	#extract_quantity_from_batch(OrderId, SKU, quantity)
+
+
+@bp.route('/filledbutton', methods=['POST'])
+def handle_delete_product():
+    print('Im filling a product')
+    OrderId = request.form['row_OrderId']
+    print(OrderId)
+    return jsonify(status='success')
+
 	
 
 
