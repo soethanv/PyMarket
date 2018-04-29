@@ -72,9 +72,9 @@ def handle_delete_product():
 
 @bp.route('/batchesdelete', methods=['POST'])
 def handle_delete_batch():
-    print('I am deleting a product')
+    print('I am deleting a batch')
     batchID= request.form['row_id']
-    print(batchID)
+    #print(batchID)
     delete_single_batch(batchID)
     return jsonify(status='success')
 
@@ -88,7 +88,7 @@ def get_inventory():
 @bp.route('/getbatchdata', methods=["GET", "POST"])
 def get_sku():
     sku = request.form['row_sku']
-    print("batch data before printing")
+    #print("batch data before printing")
     batch_data = get_batches_with(sku)
     print(batch_data)
     return jsonify(status="success", data=batch_data)
@@ -97,7 +97,7 @@ def get_batches_with(SKU):
     # need to handle this more efficiently
     if SKU is None:
         SKU = 1234
-    print("Called get_batches_with SKU " + str(SKU))
+    #print("Called get_batches_with SKU " + str(SKU))
     batch = read_product_batches(SKU)
     batches = []
     for bat in batch:
