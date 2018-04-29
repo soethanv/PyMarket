@@ -97,6 +97,51 @@
     </div>
   </div>
   <!-- end of popup edit modal -->
+  <!--Add batch Button Model-->
+  <div class="modal fade" id='addBatchModal' tabindex="1" role="dialog" aria-labelledby="addBatchModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addBatchModal">Add new batch</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/batchesadd" method="post">
+            <div class="form-row align-items-center">
+              <div class="col-auto">
+                <label for="addSKU">SKU</label>
+                <input type="text" name="SKU" disabled class="form-control mb-2" id="addSKU">
+              </div>
+              <div class="col-auto">
+                <label for="addName">Producer</label>
+                <input type="text" name="Name" class="form-control mb-2" id="addName" placeholder="Producer A" required pattern="^[\w\-\s]+$" maxlength="22">
+              </div>
+              <div class="col-auto">
+                <label for="addQ">Quantity</label>
+                <input type="text" name="Quantity" class="form-control mb-2" id="addQ" placeholder="500" required min="1" max="8" pattern="[0-9]*">
+              </div>
+            </div>
+            <div class="col-auto">
+              <h5>Expiration Date</h5>
+              <label for="expireYear">Year</label>
+              <input type="text" style="width:65px" name="Year" class="form-control mb-2" id="expireYear" placeholder="2018" required min="4" max="4" pattern="[0-9]{4}">
+              <label for="expireMonth">Month</label>
+              <input type="text" style="width:45px" name="Month" class="form-control mb-2" id="expireMonth" placeholder="12" required min="1" max="2" pattern="[0-9]+">
+              <label for="expireDay">Day</label>
+              <input type="text" style="width:45px" name="Day" class="form-control mb-2" id="expireDay" placeholder="31" required min="1" max="2" pattern="[0-9]+">
+            </div>
+            <div class="modal-footer">
+              <input type="submit" class="btn btn-primary"></input>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End of Add batch Button Model-->
 
   <div class="container-fluid">
     <div align="left">
@@ -220,7 +265,7 @@
             "data": null,
             "defaultContent": '<button style="margin-right:8px" type="button" name="editButton" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal">Edit</button>'
             + '<button style="margin-right:8px" type="button" name="deleteIButton" class="btn btn-danger btn-sm" >Delete</button>'
-            + '<button type="button" name="#" class="btn bg-success btn-sm text-white" >Add Batch</button>'
+            + '<button type="button" name="addBButton" class="btn bg-success btn-sm text-white" data-toggle="modal" data-target="#addBatchModal">Add Batch</button>'
         }
       ]
 
