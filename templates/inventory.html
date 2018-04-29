@@ -145,7 +145,7 @@
     table_str += "</table>";
     return table_str;
   }
-  function format ( data ) {
+  function getBatchTable ( data ) {
 
      var div = $('<div/>')
         .addClass( 'loading' )
@@ -276,7 +276,7 @@
         }
         else {
             // Open this row
-            row.child( format(row.data()) ).show();
+            row.child( getBatchTable(row.data()) ).show();
             tr.addClass('shown');
         }
     } );
