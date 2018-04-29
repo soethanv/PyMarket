@@ -24,26 +24,10 @@
 </div>
 <script>
 
-/*function format ( d ) {
-    // `d` is the original data object for the row
-    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-        '<tr>'+
-            '<td>Full name:</td>'+
-            '<td>'+"something"+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Extension number:</td>'+
-            '<td>'+"something"+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Extra info:</td>'+
-            '<td>And any further details here (images etc)...</td>'+
-        '</tr>'+
-    '</table>';
-  }*/
+
 
   function format ( d ) {
-    
+
     // `d` is the original data object for the row
     var str = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
     str += 	'<tr>'+ 
@@ -52,7 +36,8 @@
         	'<td>'+'Location'+'</td>'+
         	'<td>'+'Quantity'+'</td>'+
         	'<td>'+'Status'+'</td>'
-     		+'</tr>';
+     		+'</tr>';   
+
     {% for product in inventory %}
     str +=	'<tr>'+
        		'<td>'+'{{product[0]}}'+'</td>'+
@@ -111,29 +96,6 @@
             tr.addClass('shown');
         }
     } );
-
-    
-
-    /*$('input[name=checkbox]').change(function(){
-    if($(this).is(':checked')) {
-        // Checkbox is checked..
-        alert("The checkbox was checked.");
-    } else {
-        // Checkbox is not checked..
-        alert("The checkbox was unchecked.");
-    }
-});*/
-
-/*document.addEventListener("DOMContentLoaded", function (event) {
-    var _selector = document.querySelector('input[name=checkbox]');
-    _selector.addEventListener('change', function (event) {
-        if (_selector.checked) {
-            alert("The checkbox was checked.");
-        } else {
-            alert("The checkbox was unchecked.");
-        }
-    });
-});*/
 
   } );
 

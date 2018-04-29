@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required
 from models.crud_operations import read_all_orders, get_order_items, update_order_status
 from datetime import datetime
+from flask import request
 
 bp = Blueprint('sales', __name__, template_folder='templates', static_folder='static')
 
@@ -24,18 +25,27 @@ def get_orders():
 
 def get_inventory(salesparm):
 	inventory = []
+	hold = []
+	inv_dict = {}
+	count = 0
+	for allproduct in salesparm:
+		count += 1
+		poID = allproduct[0]
+		hold = get_order_items(poID)
+		inv_dict[poID] = hold
+		for oneproduct in hold:
+			inventory.append(list(oneproduct))
+		
+			
+	print(inv_dict[1])
+	print(inv_dict)
 	
-	for po in salesparm:
-		print(get_order_items(po[0]))
-	
-	inventory.append([123, 'Cabbage', 'Vegetables', 200, 233])
-	inventory.append([421, 'Wheat', 'Grain', 1000, 3000])
 	#inventory.append([344, 'Barley', 'Grain', 1000, 3000])
 	#inventory.append([424, 'Apple', 'Fruit', 100, 200])
-	return inventory
+	return inventory;
 
 
-def filled():
-	update_order_status()
+#def filled():
+	#update_order_status()
 
 
