@@ -11,11 +11,7 @@
   }
 </style>
 <div class="container-fluid">
-  <h1 align="center">This is the inventory page</h1>
-  <div align="right" >
-    <a href="{{ url_for('user_auth.logout') }}">Logout</a>
-
-  </div>
+  <h1 align="center">Inventory Page</h1>
   <!--Add Button Model-->
   <div class="modal fade" id='addModal' tabindex="1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -87,16 +83,8 @@
                 <input type="text" name="RP" class="form-control mb-2" id="editRP" required min="1" max="8" pattern="[0-9]*">
               </div>
               <div class="col-auto">
-                <label for="editQ">Quantity</label>
-                <input type="text" name="Quantity" class="form-control mb-2" id="editStock" required min="1" max="8" pattern="[0-9]*">
-              </div>
-              <div class="col-auto">
                 <label for="editPrice">Price</label>
                 <input type="text" name="Price" class="form-control mb-2" id="editPrice" required min="1" max="8" pattern="[0-9]*.{1}[0-9]*">
-              </div>
-              <div class="col-auto">
-                <label for="editCat">Category</label>
-                <input type="text" name="Category" class="form-control mb-2" id="editCat" required pattern="[A-Za-z]+" maxlength="14">
               </div>
             </div>
             <div class="modal-footer">
@@ -109,8 +97,59 @@
     </div>
   </div>
   <!-- end of popup edit modal -->
+  <!--Add batch Button Model-->
+  <div class="modal fade" id='addBatchModal' tabindex="1" role="dialog" aria-labelledby="addBatchModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addBatchModal">Add new batch</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/batchesadd" method="post">
+            <div class="form-row align-items-center">
+              <div class="col-auto">
+                <label for="addSKU">SKU</label>
+                <input type="text" name="batchSKU" readonly class="form-control mb-2" id="addBatchSKU">
+              </div>
+              <div class="col-auto">
+                <label for="addName">Producer</label>
+                <input type="text" name="Producer" class="form-control mb-2" placeholder="Producer A" required pattern="^[\w\-\s]+$" maxlength="22">
+              </div>
+              <div class="col-auto">
+                <label for="addQ">Quantity</label>
+                <input type="text" name="Quantity" class="form-control mb-2" placeholder="500" required min="1" max="8" pattern="[0-9]*">
+              </div>
+            </div>
+            <h5>Expiration Date</h5>
+            <div class="form-row align-items-center">
+              <div class="col-md-2">
+                <label for="expireYear">Year</label>
+                <input type="text" style="width:65px" name="Year" class="form-control mb-2" id="expireYear" placeholder="2018" required min="4" max="4" pattern="[0-9]{4}">
+              </div>
+              <div class="col-md-2">
+                <label for="expireMonth">Month</label>
+                <input type="text" style="width:45px" name="Month" class="form-control mb-2" id="expireMonth" placeholder="12" required min="1" max="2" pattern="[0-9]+">
+              </div>
+              <div class="col-md-2" style="margin-left:-1.3em;">
+                <label for="expireDay">Day</label>
+                <input type="text" style="width:45px" name="Day" class="form-control mb-2" id="expireDay" placeholder="31" required min="1" max="2" pattern="[0-9]+">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input type="submit" class="btn btn-primary"></input>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End of Add batch Button Model-->
 
-  <div class="container">
+  <div class="container-fluid">
     <div align="left">
       <button style="margin: 8px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" data-whatever="@Add">
         Add Product
@@ -124,7 +163,7 @@
 </div>
 <script>
   function format_table(batch_data){
-    var table_str = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
+    var table_str = '<table cellpadding="5" id="batchtable" cellspacing="0" border="0" style="padding-left:50px;">';
     table_str += '<tr>'+
                     '<th>'+"Batch ID"+"</th>"+
                     '<th>'+"Producer"+"</th>"+
@@ -137,7 +176,7 @@
       var expire_date = new Date(batch_data[i][3]);
       var now = new Date();
       var timeDiff = Math.abs(expire_date.getTime() - now.getTime());
-      var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+      var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
       console.log(diffDays);
       if(diffDays <= 7){
         table_str += '<tr class="bg-warning text-dark">';
@@ -146,12 +185,12 @@
         table_str += '<tr>';
       }
       //console.log(expire_date);
-      table_str +=      '<td>'+batch_data[i][0]+'</td>'+
+      table_str +=      '<td class="batchid">'+batch_data[i][0]+'</td>'+
                         '<td>'+batch_data[i][1]+'</td>'+
                         '<td>'+batch_data[i][2]+'</td>'+
                         '<td>'+expire_date+'</td>'+
                         '<td>'+
-                            '<button type="button" name="#" class="btn btn-danger btn-sm" style="margin-left:10px" >Delete</button>'
+                            '<button type="button" name="deleteBButton" class="btn btn-danger btn-sm" style="margin-left:10px" >Delete</button>'
                           +'</td>'+
                     '</tr>';
     }
@@ -163,7 +202,7 @@
      var div = $('<div/>')
         .addClass( 'loading' )
         .text( 'Loading...' );
- 
+
     var batch_data;
     $.ajax({
               type: "POST",
@@ -230,8 +269,9 @@
             "targets": -1,
             title: "Options",
             "data": null,
-            "defaultContent": '<button type="button" name="editButton" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal">Edit</button>'
-            + '<button type="button" name="deleteButton" class="btn btn-danger btn-sm" style="margin-left:10px" >Delete</button>'
+            "defaultContent": '<button style="margin-right:8px" type="button" name="editButton" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal">Edit</button>'
+            + '<button style="margin-right:8px" type="button" name="deleteIButton" class="btn btn-danger btn-sm" >Delete</button>'
+            + '<button type="button" name="addBButton" class="btn bg-success btn-sm text-white" data-toggle="modal" data-target="#addBatchModal">Add Batch</button>'
         }
       ]
 
@@ -244,34 +284,79 @@
             var tr = $(this).parents('tr');
             var row = table.row( tr );
             var data = row.data();
-            document.getElementById('editSKU').value = data[0]
+            document.getElementById('editSKU').value = data[0];
             document.getElementById('editName').value = data[1];
-            document.getElementById('editCat').value = data[2];
             document.getElementById('editPrice').value = data[3];
             document.getElementById('editRP').value = data[4];
-            document.getElementById('editStock').value = data[5];
+        }
+    });
+
+    // Add Batches Modal
+    $('#inventory_table tbody').on('click', 'button', function() {
+        var name = $(this).attr('name');
+        if (name == "addBButton") {
+            var tr = $(this).parents('tr');
+            var row = table.row( tr );
+            var data = row.data();
+            document.getElementById('addBatchSKU').value = data[0];
         }
     });
 
     // Delete product
     $('#inventory_table tbody').on('click', 'button', function() {
         var name = $(this).attr('name');
-        if (name == "deleteButton") {
+        if (name == "deleteIButton") {
             var tr = $(this).closest('tr');
             var row = table.row( tr );
             var data = row.data();
-            $.ajax({
-                      type:'POST',
-                      url:'/inventorydelete',
-                      data: {row_sku: data[0]},
-                      dataType: 'text',
-                      success: function(response) {
-                          console.log('success');
-                      },
-                      error: function(err){
-                          console.log(err);
-                      }
-            });
+            if(confirm("Are you sure you want to delete this Product?")){
+                $.ajax({
+                          type:'POST',
+                          url:'/inventorydelete',
+                          data: {row_sku: data[0]},
+                          dataType: 'text',
+
+                          success: function(response) {
+                              console.log('Delete success');
+                              row.remove().draw();
+                          },
+                          error: function(err){
+                              console.log(err);
+                          }
+                });
+            } else {
+                alert("Canceling deletion.");
+            }
+        }
+    });
+
+    // Delete batches
+    $('#inventory_table tbody').on('click', 'button', function() {
+        var name = $(this).attr('name');
+        if (name == "deleteBButton") {
+            var $row = $(this).closest('tr');
+            var $data = $(this).closest('tr')
+                               .find(".batchid")
+                               .text();
+            console.log($data);
+            if(confirm("Are you sure you want to delete this batch?")){
+                $.ajax({
+                          type:'POST',
+                          url:'/batchesdelete',
+                          data: {row_id: $data},
+                          dataType: 'text',
+
+                          success: function(response) {
+                              console.log('Delete success');
+                              $row.remove();
+                          },
+                          error: function(err){
+                              console.log(err);
+                          }
+                });
+            } else {
+                alert("Canceling deletion.");
+            }
         }
     });
 

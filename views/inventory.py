@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, jsonify
 from flask_login import login_required
 from models.crud_operations import read_all_products, read_product_batches, read_single_product, \
-create_product, update_product_name, update_product_reorder_point, update_product_price, delete_product
+create_product, update_product_name, update_product_reorder_point, update_product_price, delete_product, \
+delete_single_batch, create_product_batch
 from datetime import datetime
 import json
 from flask import jsonify
@@ -17,8 +18,8 @@ def inventory():
     return render_template('inventory.html', title='Inventory', inventory=inventory, check_expiration_date=check_expiration_date)
 
 @bp.route('/inventoryadder', methods=['POST'])
-def handle_add():
-    print('I am adding an product')
+def handle_add_product():
+    print('I am adding a product')
     SKU = request.form['SKU']
     name = request.form['Name']
     reorder_point = request.form['RP']
@@ -26,6 +27,19 @@ def handle_add():
     category = request.form['Category']
     stock = request.form['Quantity']
     create_product(SKU, name, category, price, reorder_point, stock)
+    return redirect('/inventory', code=302)
+
+@bp.route('/batchesadd', methods=['POST'])
+def handle_add_batch():
+    print('I am adding a batch')
+    SKU = request.form['batchSKU']
+    producer = request.form['Producer']
+    stock = request.form['Quantity']
+    day = request.form['Day']
+    month = request.form['Month']
+    year = request.form['Year']
+    print(SKU+' '+producer+' '+stock+' '+day+' '+month+' '+year)
+    create_product_batch(SKU, producer, int(stock), int(year), int(month), int(day))
     return redirect('/inventory', code=302)
 
 @bp.route('/inventoryeditor', methods=['POST'])
@@ -44,19 +58,26 @@ def handle_edit():
     price = request.form['Price']
     if product.price != price:
         update_product_price(SKU, price)
-    category = request.form['Category']
-    stock = request.form['Quantity']
     return redirect('/inventory', code=302)
 
 
 
 @bp.route('/inventorydelete', methods=['POST'])
-def handle_delete():
+def handle_delete_product():
     print('I am deleting a product')
     SKU = request.form['row_sku']
     print(SKU)
-    # delete_product(SKU)
+    delete_product(SKU)
     return jsonify(status='success')
+
+@bp.route('/batchesdelete', methods=['POST'])
+def handle_delete_batch():
+    print('I am deleting a batch')
+    batchID= request.form['row_id']
+    #print(batchID)
+    delete_single_batch(batchID)
+    return jsonify(status='success')
+
 
 def get_inventory():
     inventory = []
@@ -67,7 +88,7 @@ def get_inventory():
 @bp.route('/getbatchdata', methods=["GET", "POST"])
 def get_sku():
     sku = request.form['row_sku']
-    print("batch data before printing")
+    #print("batch data before printing")
     batch_data = get_batches_with(sku)
     print(batch_data)
     return jsonify(status="success", data=batch_data)
@@ -76,7 +97,7 @@ def get_batches_with(SKU):
     # need to handle this more efficiently
     if SKU is None:
         SKU = 1234
-    print("Called get_batches_with SKU " + str(SKU))
+    #print("Called get_batches_with SKU " + str(SKU))
     batch = read_product_batches(SKU)
     batches = []
     for bat in batch:
