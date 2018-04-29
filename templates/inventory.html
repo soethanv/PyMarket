@@ -123,45 +123,57 @@
   </div>
 </div>
 <script>
-  function format ( d ) {
+  function format_table(batch_data){
+    var table_str = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
+    table_str += '<tr>'+
+                    '<th>'+"Batch ID"+"</th>"+
+                    '<th>'+"Producer"+"</th>"+
+                    '<th>'+"Quantity"+"</th>"+
+                    '<th>'+"Expiration Date"+"</th>"+
+                    '<th>'+"Option"+"</th>"+
+                  '</tr>';
+    console.log("finish creating header");
+    console.log(batch_data);
+    var i;
+    for(i=0; i<batch_data.length; i++){
+      table_str += '<tr>'+
+                        '<td>'+batch_data[i][0]+'</td>'+
+                        '<td>'+batch_data[i][1]+'</td>'+
+                        '<td>'+batch_data[i][2]+'</td>'+
+                        '<td>'+batch_data[i][3]+'</td>'+
+                        '<td>'+"X"+'</td>'+
+                    '</tr>';
+    }
+    table_str += "</table>";
+    return table_str;
+  }
+  function format ( data ) {
+
+     var div = $('<div/>')
+        .addClass( 'loading' )
+        .text( 'Loading...' );
+ 
     // `d` is the original data object for the row
-    var data = d;
+    var batch_data;
     $.ajax({
               type: "POST",
-              url: "/getsku",
+              url: "/getbatchdata",
               data: {row_sku: data[0]},
               dataType: "text",
               success: function(response) {
-                  console.log("success");
+                console.log("success");
+                console.log(response);
+                var obj = JSON.parse(response);
+                console.log(obj.data);
+                div
+                  .html( format_table(obj.data) )
+                  .removeClass( 'Loading' );
               },
               error: function(err) {
                   console.log(err);
               }
           });
-
-    var table_str = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
-    table_str += '<tr>'+
-                    '<th>'+"Batch ID"+"</th>"+
-                    '<th>'+"Quantity"+"</th>"+
-                    '<th>'+"Expiration Date"+"</th>"+
-                    '<th>'+"Option"+"</th>";
-
-    {% for batch in get_batches_with() %}
-      {% if check_expiration_date(batch.batch_expiration) == True  %}
-        table_str += '<tr class="bg-warning">';
-      {% else %}
-        table_str += '<tr>';
-      {% endif %}
-      table_str +=
-                        '<td>' + '{{batch.batchID}}' + '</td>'+
-                        //'<td>' + '{{batch.producer}}' + '</td>'+
-                        '<td>' + '{{batch.batch_quantity}}' + '</td>'+
-                        '<td>' + '{{batch.batch_expiration}}' + '</td>'+
-                        '<td>' + 'X' + '</td>'+
-                    '</tr>'; 
-    {% endfor %}
-    table_str += "</table>";
-    return table_str;
+      return div;
   }
 
   $(document).ready(function() {
