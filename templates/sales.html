@@ -93,8 +93,6 @@ function toggleCheckbox(OrderID, SKU, quantity)
                   console.log(err);
               }
           });
-
-
 }
 
 function format_table( d, OrderID ) {
@@ -191,19 +189,6 @@ function format_table( d, OrderID ) {
             "defaultContent": '<button type="button" id="filledButton" name="filledButton" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#filledModal">Filled</button>'
            
         }
-      
-      
-      /*"columnDefs": [ {
-          "targets": -1,
-          "className":      'details-control',
-          "orderable":      false,
-          "data":           null,
-          "defaultContent": '',
-          "render": function () {
-           return '<i class="fa a-plus-square" aria-hidden="true"></i>';
-                     }
-      } ]*/
-
       ]
       
     } );
@@ -220,7 +205,9 @@ function format_table( d, OrderID ) {
 
             console.log("pressed filled button");  
             console.log(allFilled[data[0]]);  
+
             var result = FilledButton(data[0]);
+            console.log(result);
                 if(result == 1)
                 {
                    console.log('filled sucess');
@@ -231,7 +218,7 @@ function format_table( d, OrderID ) {
                    return 0
                 }
 
-            if(confirm("Are you sure you want to delete this Product?")){
+            if(confirm("Are you sure you want to fill this Order?")){
                 $.ajax({
                           type:'POST',
                           url:'/filledbutton',
@@ -239,14 +226,15 @@ function format_table( d, OrderID ) {
                           dataType: 'text',
 
                           success: function(response) {
-                              console.log("We are now going to fill an order");
+                              console.log("We filled an order!");
+                              row.remove().draw();
                           },
                           error: function(err){
                               console.log(err);
                           }
                 });
             } else {
-                alert("Canceling deletion.");
+                alert("Canceling filled order.");
             }
         }
     });

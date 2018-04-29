@@ -133,7 +133,11 @@ def extract_quantity_from_batch(customerID, SKU, requested_quantity):
     if product is None:
         raise Exception('Product with ' + str(SKU) + ' does not exist')
 
+
+
     if product.stock_quantity < requested_quantity:
+        print(product.stock_quantity)
+        print(requested_quantity)
         raise Exception('Not enough stock_quantity to fill order!')
 
     product.stock_quantity = product.stock_quantity - requested_quantity

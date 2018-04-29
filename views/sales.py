@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required
-from models.crud_operations import read_all_orders, get_order_items, update_order_status
+from models.crud_operations import read_all_orders, get_order_items, update_order_status, extract_quantity_from_batch
 from datetime import datetime
 from flask import request
 import json
@@ -48,7 +48,7 @@ def get_products_with(podID):
 
 
 @bp.route('/fillproductdata', methods=["GET", "POST"])
-def filled():
+def filledproductdata():
 	SKU = request.form['row_SKU']
 	quantity = request.form['row_quantity']
 	OrderId = request.form['row_OrderId']
@@ -56,12 +56,13 @@ def filled():
 	print("for SKU " + SKU)
 	print("with Order Id " + OrderId)
 	print("\n\n")
+	extract_quantity_from_batch(int(OrderId), int(SKU), int(quantity))
 	return jsonify(status='success')
 	#extract_quantity_from_batch(OrderId, SKU, quantity)
 
 
 @bp.route('/filledbutton', methods=['POST'])
-def handle_delete_product():
+def handle_filled_order():
     print('Im filling a product')
     OrderId = request.form['row_OrderId']
     print(OrderId)
