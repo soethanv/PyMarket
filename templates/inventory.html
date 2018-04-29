@@ -133,13 +133,26 @@
                     '<th>'+"Option"+"</th>"+
                   '</tr>';
     var i;
-    for(i=0; i<batch_data.length; i++){
-      table_str += '<tr>'+
-                        '<td>'+batch_data[i][0]+'</td>'+
+    for(i=0; i < batch_data.length; i++){
+      var expire_date = new Date(batch_data[i][3]);
+      var now = new Date();
+      var timeDiff = Math.abs(expire_date.getTime() - now.getTime());
+      var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+      console.log(diffDays);
+      if(diffDays <= 7){
+        table_str += '<tr class="bg-warning text-dark">';
+      }
+      else {
+        table_str += '<tr>';
+      }
+      //console.log(expire_date);
+      table_str +=      '<td>'+batch_data[i][0]+'</td>'+
                         '<td>'+batch_data[i][1]+'</td>'+
                         '<td>'+batch_data[i][2]+'</td>'+
-                        '<td>'+batch_data[i][3]+'</td>'+
-                        '<td>'+"X"+'</td>'+
+                        '<td>'+expire_date+'</td>'+
+                        '<td>'+
+                            '<button type="button" name="#" class="btn btn-danger btn-sm" style="margin-left:10px" >Delete</button>'
+                          +'</td>'+
                     '</tr>';
     }
     table_str += "</table>";
@@ -217,8 +230,8 @@
             "targets": -1,
             title: "Options",
             "data": null,
-            "defaultContent": '<button type="button" name="editButton" class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>'
-            + '<button type="button" name="deleteButton" class="btn btn-danger" style="margin-left:10px" >Delete</button>'
+            "defaultContent": '<button type="button" name="editButton" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal">Edit</button>'
+            + '<button type="button" name="deleteButton" class="btn btn-danger btn-sm" style="margin-left:10px" >Delete</button>'
         }
       ]
 
@@ -281,5 +294,6 @@
         }
     } );
   } );
+
 </script>
 {% endblock %}
