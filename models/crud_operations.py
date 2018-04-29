@@ -75,6 +75,9 @@ def delete_product(SKU):
         raise err
 
 
+def get_reorder_items():
+    return Product.query.filter(Product.stock_quantity <= Product.reorder_point).all()
+
 
 # Batch crud methods
 
@@ -161,6 +164,24 @@ def extract_quantity_from_batch(customerID, SKU, requested_quantity):
     out_transaction = OutgoingTransaction(customerID, SKU, requested_quantity, from_batches_str)
     db.session.add(out_transaction)
     db.session.commit()
+
+
+def get_expiring_batches():
+    now = datetime.utcnow()
+
+    batches = ProductBatch.query.all()
+
+    if batches is None:
+        return None
+
+    expiring_batches = []
+    for bt in batches:
+        diff = bt.batch_expiration - now
+
+        if diff.days <= 7:
+            expiring_batches.append(bt)
+
+    return expiring_batches
 
 
 
