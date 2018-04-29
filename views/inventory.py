@@ -25,8 +25,8 @@ def handle_add_product():
     reorder_point = request.form['RP']
     price = request.form['Price']
     category = request.form['Category']
-    stock = request.form['Quantity']
-    create_product(SKU, name, category, price, reorder_point, stock)
+    storage_location = request.form['Location']
+    create_product(SKU, name, category, price, reorder_point, storage_location)
     return redirect('/inventory', code=302)
 
 @bp.route('/batchesadd', methods=['POST'])
