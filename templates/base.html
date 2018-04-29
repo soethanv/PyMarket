@@ -29,7 +29,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav mr-auto">
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('sales.sales') }}">
@@ -55,7 +55,8 @@
                             Outgoing Transactions
                         </a>
                     </li>
-
+                </ul>
+                <ul class="navbar-nav">
                     {% if title != 'Sign In' %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('user_auth.logout') }}">

@@ -9,7 +9,7 @@ class OutgoingTransaction(db.Model):
     SKU = db.Column(db.Integer, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     from_batches = db.Column(db.String(128), nullable=False)
-    transactionDate = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    transactionDate = db.Column(db.DateTime, default=datetime.utcnow)
 
 
     def __init__(self, customerID, SKU, quantity, from_batches):
