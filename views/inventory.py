@@ -13,7 +13,8 @@ sku = None
 @login_required
 def inventory():
     inventory = get_inventory()
-    return render_template('inventory.html', title='Inventory', inventory=inventory, get_batches_with=get_batches_with, check_expiration_date=check_expiration_date)
+    print("jsonify")
+    return render_template('inventory.html', title='Inventory', inventory=inventory, check_expiration_date=check_expiration_date)
 
 @bp.route('/inventoryadder', methods=['POST'])
 def handle_add():
@@ -47,12 +48,7 @@ def handle_edit():
     stock = request.form['Quantity']
     return redirect('/inventory', code=302)
 
-@bp.route('/getsku', methods=['POST'])
-def get_sku():
-    global sku
-    sku = request.form['row_sku']
-    print("Changing sku to "+sku)
-    return jsonify(status="success")
+
 
 @bp.route('/inventorydelete', methods=['POST'])
 def handle_delete():
@@ -68,12 +64,23 @@ def get_inventory():
         inventory.append((product.SKU, product.name, product.category, str(product.price), product.reorder_point, product.stock_quantity, product.storage_location))
     return inventory
 
-def get_batches_with():
-    global sku
-    print("Called get_batches_with sku "+str(sku))
-    batch = read_product_batches(sku)
-    print(batch)
-    return batch
+@bp.route('/getbatchdata', methods=["GET", "POST"])
+def get_sku():
+    sku = request.form['row_sku']
+    print("batch data before printing")
+    batch_data = get_batches_with(sku)
+    print(batch_data)
+    return jsonify(status="success", data=batch_data)
+
+def get_batches_with(SKU):
+    if SKU is None:
+        SKU = 1234
+    print("Called get_batches_with SKU "+str(SKU))
+    batch = read_product_batches(SKU)
+    batches = []
+    for bat in batch:
+        batches.append((bat.batchID, bat.producer, bat.batch_quantity, bat.batch_expiration))
+    return batches
 
 def check_expiration_date(batch_expiration):
     now = datetime.utcnow()
