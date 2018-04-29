@@ -73,9 +73,10 @@ def get_sku():
     return jsonify(status="success", data=batch_data)
 
 def get_batches_with(SKU):
+    # need to handle this more efficiently
     if SKU is None:
         SKU = 1234
-    print("Called get_batches_with SKU "+str(SKU))
+    print("Called get_batches_with SKU " + str(SKU))
     batch = read_product_batches(SKU)
     batches = []
     for bat in batch:

@@ -132,8 +132,6 @@
                     '<th>'+"Expiration Date"+"</th>"+
                     '<th>'+"Option"+"</th>"+
                   '</tr>';
-    console.log("finish creating header");
-    console.log(batch_data);
     var i;
     for(i=0; i<batch_data.length; i++){
       table_str += '<tr>'+
@@ -153,7 +151,6 @@
         .addClass( 'loading' )
         .text( 'Loading...' );
  
-    // `d` is the original data object for the row
     var batch_data;
     $.ajax({
               type: "POST",
@@ -161,10 +158,10 @@
               data: {row_sku: data[0]},
               dataType: "text",
               success: function(response) {
-                console.log("success");
-                console.log(response);
+                console.log("ajax success");
+                // console.log(response);
                 var obj = JSON.parse(response);
-                console.log(obj.data);
+                // console.log(obj.data);
                 div
                   .html( format_table(obj.data) )
                   .removeClass( 'Loading' );
@@ -279,7 +276,6 @@
         }
         else {
             // Open this row
-            
             row.child( format(row.data()) ).show();
             tr.addClass('shown');
         }
