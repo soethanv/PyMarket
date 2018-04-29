@@ -349,6 +349,7 @@
                           success: function(response) {
                               console.log('Delete success');
                               $row.remove();
+                              location.reload();
                           },
                           error: function(err){
                               console.log(err);
