@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='signin.css') }}">
 
 <div class="container" style="margin-top:80px;">
-    <div class="text-center">
+    <div class="text-center" style="font-family: 'Gugi', serif;">
         <h1>PyMarket Storage Portal</h1>
         <h3 style="margin:10px;">Sign In</h3>
     </div>
@@ -12,20 +12,20 @@
         <form action="" method="post">
             {{ form.hidden_tag() }}
             <p style="margin-bottom:0px;">
-                
+
                 {{ form.username(size=32) }}<br>
                 {% for error in form.username.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </p>
             <p style="margin-bottom:0px;">
-                
+
                 {{ form.password(size=32) }}<br>
                 {% for error in form.password.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </p>
-            <p>{{ form.submit() }}</p>
+            <p style="font-family: 'Gugi', serif;">{{ form.submit() }}</p>
         </form>
     </div>
 </div>
@@ -34,8 +34,8 @@
         $("#submit").addClass("btn btn-primary btn-block btn-sm");
         $("#username").addClass("form-control");
         $("#password").addClass("form-control");
-        $("#username").attr("placeholder", "username");
-        $("#password").attr("placeholder", "password");
+        $("#username").attr("placeholder", "Username");
+        $("#password").attr("placeholder", "Password");
 
     });
 </script>
