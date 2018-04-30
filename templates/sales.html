@@ -14,7 +14,7 @@
 </style>
 
 <div class="container-fluid">
-  <h1 align="center">This is the Sales page</h1>
+  <h1 align="center">Orders</h1>
 
   <div class="container">
     <div class="table-responsive">
@@ -71,7 +71,7 @@ function updateFilledBox(OrderId)
 }
 
 //Listener for checkbx
-function toggleCheckbox(OrderID, SKU, quantity, cartID)
+function toggleCheckbox(CustID, OrderID, SKU, quantity, cartID)
 {
   var stringy = "" + OrderID + SKU;
   
@@ -83,7 +83,7 @@ function toggleCheckbox(OrderID, SKU, quantity, cartID)
   $.ajax({
               type: "POST",
               url: "/fillproductdata",
-              data: {row_SKU: SKU, row_quantity: quantity, row_OrderId: OrderID, row_cartId: cartID},
+              data: {row_SKU: SKU, row_quantity: quantity, row_CustId: CustID, row_cartId: cartID},
               dataType: "text",
               success: function(response) {
                 console.log("ajax success");
@@ -143,7 +143,7 @@ console.log(d[0][4]);
         else
         {
           console.log("it's not filled");
-           str += '<td><input id="'+ OrderID +''+ d[i][0] + '" type="checkbox" onclick="toggleCheckbox('+ OrderID +',' + d[i][0] + ','+ d[i][3] + ',' + d[i][5] + ')">'+'</td>'+
+           str += '<td><input id="'+ OrderID +''+ d[i][0] + '" type="checkbox" onclick="toggleCheckbox(' + d[i][6] + ',' + OrderID +',' + d[i][0] + ','+ d[i][3] + ',' + d[i][5] + ')">'+'</td>'+
           '</tr>';
         }
                  

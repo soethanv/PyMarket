@@ -6,17 +6,17 @@ from flask import request
 import json
 from flask import jsonify
 
-bp = Blueprint('sales', __name__, template_folder='templates', static_folder='static')
+bp = Blueprint('orders', __name__, template_folder='templates', static_folder='static')
 
 poID = None
 
-@bp.route('/sales')
+@bp.route('/orders')
 @login_required
 def sales():
     sales = get_orders()
     salesLen = len(sales)
     #inventory = get_inventory(sales)
-    return render_template('sales.html', title='Sales Orders', sales=sales)
+    return render_template('orders.html', title='Orders', sales=sales)
 
 def get_orders():
 	order = []
@@ -49,14 +49,14 @@ def get_products_with(podID):
 def filledproductdata():
 	SKU = request.form['row_SKU']
 	quantity = request.form['row_quantity']
-	OrderId = request.form['row_OrderId']
+	CustId = request.form['row_CustId']
 	cartID = request.form['row_cartId']
-	print("and cartID" + cartID)
-	print("\n\nTaking out "+ quantity)
-	print("for SKU " + SKU)
-	print("with Order Id " + OrderId)
-	print("\n\n")
-	extract_quantity_from_batch(int(OrderId), int(SKU), int(quantity))
+	#print("and cartID" + cartID)
+	#print("\n\nTaking out "+ quantity)
+	#print("for SKU " + SKU)
+	#print("with Order Id " + OrderId)
+	#print("\n\n")
+	extract_quantity_from_batch(int(CustId), int(SKU), int(quantity))
 	update_order_item_status(int(cartID))
 	return jsonify(status='success')
 	#extract_quantity_from_batch(OrderId, SKU, quantity)
