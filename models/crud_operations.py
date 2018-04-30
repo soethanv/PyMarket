@@ -131,6 +131,8 @@ def extract_quantity_from_batch(customerID, SKU, requested_quantity):
         inventory's quantity. Exception is thrown if the
         requested amount is greated than the stock_quantity
     '''
+    initial_req_quantity = requested_quantity
+
     product = Product.query.filter_by(SKU=SKU).first()
 
     if product is None:
@@ -164,7 +166,7 @@ def extract_quantity_from_batch(customerID, SKU, requested_quantity):
 
     db.session.commit()
 
-    out_transaction = OutgoingTransaction(customerID, SKU, requested_quantity, from_batches_str)
+    out_transaction = OutgoingTransaction(customerID, SKU, initial_req_quantity, from_batches_str)
     db.session.add(out_transaction)
     db.session.commit()
 
