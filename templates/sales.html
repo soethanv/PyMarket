@@ -136,8 +136,9 @@ console.log(d[0][4]);
         if(d[i][4] == 'FILLED')
         {
           console.log("it's filled");
-          str +='<td><input readonly id="'+ OrderID +''+ d[i][0] + '" type="checkbox" checked>'+'</td>'+
-          '</tr>';          
+          str +='<td><input disabled id="'+ OrderID +''+ d[i][0] + '" type="checkbox" checked>'+'</td>'+
+          '</tr>';    
+            updateFilledBox(OrderID);
         }
         else
         {
@@ -209,7 +210,7 @@ console.log(d[0][4]);
             "targets": -1,
             title: "Status",
             "data": null,
-            "defaultContent": '<button type="button" id="filledButton" name="filledButton" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#filledModal">Filled</button>'
+            "defaultContent": '<button type="button" id="filledButton" name="filledButton" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#filledModal">Update Status</button>'
            
         }
       ]
@@ -227,7 +228,8 @@ console.log(d[0][4]);
 
 
             console.log("pressed filled button");  
-            console.log(allFilled[data[0]]);  
+            console.log(allFilled[data[0]]);
+            console.log(row.data());  
 
             var result = FilledButton(data[0]);
             console.log(result);
@@ -237,6 +239,7 @@ console.log(d[0][4]);
                 }
                 else
                 {
+                   alert("All products must be filled first.");
                    console.log("All checkmarks not pressed");
                    return 0
                 }
@@ -245,7 +248,7 @@ console.log(d[0][4]);
                 $.ajax({
                           type:'POST',
                           url:'/filledbutton',
-                          data: {row_OrderId: data[0]},
+                          data: {row_OrderId: data[0], row_Status: data[3]},
                           dataType: 'text',
 
                           success: function(response) {
