@@ -12,7 +12,7 @@ poID = None
 
 @bp.route('/orders')
 @login_required
-def sales():
+def orders():
     sales = get_orders()
     salesLen = len(sales)
     #inventory = get_inventory(sales)
@@ -42,7 +42,7 @@ def get_products_with(podID):
 	products = []
 	for prod in product:
 		products.append((prod[0], prod[1], prod[2], prod[3], prod.status, prod.cartItemID, prod.customerID))
-	return products	
+	return products
 
 
 @bp.route('/fillproductdata', methods=["GET", "POST"])
@@ -70,7 +70,3 @@ def handle_filled_order():
     print(OrderId)
     update_order_status(OrderId, 'FILLED')
     return jsonify(status='success')
-
-	
-
-
