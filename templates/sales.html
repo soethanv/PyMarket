@@ -53,7 +53,10 @@ function updateFilledBox(OrderId)
 
   numOfFilledProducts[OrderId] -= 1;
 
+  console.log("in update filledbox");
   console.log(numOfFilledProducts[OrderId]);
+
+
   if(numOfFilledProducts[OrderId] == 0)
   {
     allFilled[OrderId] = true;
@@ -68,18 +71,19 @@ function updateFilledBox(OrderId)
 }
 
 //Listener for checkbx
-function toggleCheckbox(OrderID, SKU, quantity)
+function toggleCheckbox(OrderID, SKU, quantity, cartID)
 {
   var stringy = "" + OrderID + SKU;
   
   document.getElementById(stringy).disabled = true;
 
+  console.log("numOfFilledProducts");
   console.log(numOfFilledProducts[OrderID]);
 
   $.ajax({
               type: "POST",
               url: "/fillproductdata",
-              data: {row_SKU: SKU, row_quantity: quantity, row_OrderId: OrderID},
+              data: {row_SKU: SKU, row_quantity: quantity, row_OrderId: OrderID, row_cartId: cartID},
               dataType: "text",
               success: function(response) {
                 console.log("ajax success");
@@ -115,20 +119,35 @@ function format_table( d, OrderID ) {
     numOfFilledProducts[OrderID] = d.length;
     allFilled[OrderID] = false;
     
+console.log("status is below");
+console.log(d[0][4]);
 
     for(i=0; i < d.length; i++)
     {
+
     str +=	'<tr>'+
        		'<td>'+d[i][0]+'</td>'+
         	'<td>'+d[i][1]+'</td>'+
         	'<td>'+d[i][2]+'</td>'+
-        	'<td>'+d[i][3]+'</td>'+
-        	'<td><input id="'+ OrderID +''+ d[i][0] + '" type="checkbox" onclick="toggleCheckbox('+ OrderID +',' + d[i][0] + ','+ d[i][3] + ')">'+'</td>'+
-        	'</tr>';
+        	'<td>'+d[i][3]+'</td>';
+
+
+                
+        if(d[i][4] == 'FILLED')
+        {
+          console.log("it's filled");
+          str +='<td><input readonly id="'+ OrderID +''+ d[i][0] + '" type="checkbox" checked>'+'</td>'+
+          '</tr>';          
+        }
+        else
+        {
+          console.log("it's not filled");
+           str += '<td><input id="'+ OrderID +''+ d[i][0] + '" type="checkbox" onclick="toggleCheckbox('+ OrderID +',' + d[i][0] + ','+ d[i][3] + ',' + d[i][5] + ')">'+'</td>'+
+          '</tr>';
+        }
+                 
     }
     str += '</table>';
-
-   
 
     return str;
   }
@@ -150,8 +169,9 @@ function format_table( d, OrderID ) {
               success: function(response) {
                 console.log("ajax success");
                 
-                var obj = JSON.parse(response);
-                
+               var obj = JSON.parse(response);
+                console.log(obj.data);
+
                 div
                   .html( format_table(obj.data, data[0]) )
                   .removeClass( 'Loading' );
@@ -159,7 +179,10 @@ function format_table( d, OrderID ) {
               error: function(err) {
                   console.log(err);
               }
+
+
           });
+
       return div;
   }
 
@@ -253,6 +276,9 @@ function format_table( d, OrderID ) {
             // Open this row
             
             row.child( getProductTable(row.data()) ).show();
+
+
+
             tr.addClass('shown');
         }
     } );

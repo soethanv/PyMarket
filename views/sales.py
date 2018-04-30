@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required
-from models.crud_operations import read_all_orders, get_order_items, update_order_status, extract_quantity_from_batch
+from models.crud_operations import read_all_orders, get_order_items, update_order_status, extract_quantity_from_batch, update_order_item_status
 from datetime import datetime
 from flask import request
 import json
@@ -34,8 +34,6 @@ def get_inventory():
 	print(product_data)
 	return jsonify(status="success", data=product_data)
 
-
-
 def get_products_with(podID):
 	if podID is None:
 		podID = 1
@@ -43,7 +41,7 @@ def get_products_with(podID):
 	product = get_order_items(podID)
 	products = []
 	for prod in product:
-		products.append((prod[0], prod[1], prod[2], prod[3]))
+		products.append((prod[0], prod[1], prod[2], prod[3], prod.status, prod.cartItemID, prod.customerID))
 	return products	
 
 
@@ -52,11 +50,14 @@ def filledproductdata():
 	SKU = request.form['row_SKU']
 	quantity = request.form['row_quantity']
 	OrderId = request.form['row_OrderId']
+	cartID = request.form['row_cartId']
+	print("and cartID" + cartID)
 	print("\n\nTaking out "+ quantity)
 	print("for SKU " + SKU)
 	print("with Order Id " + OrderId)
 	print("\n\n")
 	extract_quantity_from_batch(int(OrderId), int(SKU), int(quantity))
+	update_order_item_status(int(cartID))
 	return jsonify(status='success')
 	#extract_quantity_from_batch(OrderId, SKU, quantity)
 
