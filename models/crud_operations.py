@@ -4,6 +4,7 @@ from datetime import datetime, date
 from models.product import Product
 from models.productbatch import ProductBatch
 from models.purchaseorder import PurchaseOrder
+from models.cartitem import CartItem
 from models.incomingtransaction import IncomingTransaction
 from models.outgoingtransaction import OutgoingTransaction
 
