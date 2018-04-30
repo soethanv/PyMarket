@@ -5,6 +5,7 @@
       {% else %}
       <title>Welcome to PyMarket</title>
       {% endif %}
+      <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
       <link rel="stylesheet" href="{{ url_for('static', filename='table.css') }}">
       <!--Bootstrap core CSS-->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
@@ -23,7 +24,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('dashboard.dashboard') }}">
+            <a class="navbar-brand" href="{{ url_for('dashboard.dashboard') }}" style="font-family: 'Gugi', serif;">
                 <span data-feather="home"></span>
                 PyMarket
             </a>
@@ -34,25 +35,25 @@
                 <ul class="navbar-nav mr-auto">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('orders.orders') }}">
+                        <a class="nav-link" href="{{ url_for('orders.orders') }}" style="font-family: 'Gugi', serif;">
                             <span data-feather="file"></span>
                             Orders
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('inventory.inventory') }}">
+                        <a class="nav-link" href="{{ url_for('inventory.inventory') }}" style="font-family: 'Gugi', serif;">
                             <span data-feather="shopping-cart"></span>
                             Inventory
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('transaction.incoming_transactions') }}">
+                        <a class="nav-link" href="{{ url_for('transaction.incoming_transactions') }}" style="font-family: 'Gugi', serif;">
                             <span data-feather="file"></span>
                             Incoming Transactions
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('transaction.outgoing_transactions') }}">
+                        <a class="nav-link" href="{{ url_for('transaction.outgoing_transactions') }}" style="font-family: 'Gugi', serif;">
                             <span data-feather="file"></span>
                             Outgoing Transactions
                         </a>
@@ -61,7 +62,7 @@
                 <ul class="navbar-nav">
                     {% if title != 'Sign In' %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('user_auth.logout') }}">
+                            <a class="nav-link" href="{{ url_for('user_auth.logout') }}" style="font-family: 'Gugi', serif;">
                                 <span data-feather="power"></span>
                                 Sign out
                             </a>

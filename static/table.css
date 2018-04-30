@@ -53,6 +53,7 @@ iframe {
   width: 4000px;
 }
 table {
+  /* font-family: 'Gugi', cursive; */
   border-spacing: 1;
   border-collapse: collapse;
   background: #f1f2f6;
