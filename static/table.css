@@ -42,7 +42,7 @@ iframe {
  border: none !important;
 }
 .container-table100 {
-  width: 100%;
+  width: 105%;
   min-height: 0vh;
   display: -webkit-box;
   display: -webkit-flex;
