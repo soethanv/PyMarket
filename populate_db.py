@@ -1,4 +1,4 @@
-from application import main_application
+from application import application
 from setup import db
 from sqlalchemy import text
 from datetime import date
@@ -11,7 +11,7 @@ from models.cartitem import CartItem
 from models.purchaseorder import PurchaseOrder
 from models.crud_operations import read_all_products, create_product_batch, create_product
 
-with main_application.app_context():
+with application.app_context():
 
     # delete all rows in database before executing
     meta = db.metadata
