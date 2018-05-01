@@ -2,11 +2,23 @@
     <style>
     .navbar {
 
-    background-color: #000000;
+    /* background-color: #B2DFDB; */
+    /* background-color: #000000; */
+    background-color: #304FFE;
+    /* background-color: #00E676; */
+    /* background-color: #00C853; */
+    /* background-color: #4CAF50; */
     }
     .navbar-brand, .nav-link {
       color: #ffffff;
+      font-family: 'Titillium Web', san-serif;
+      font-size: 18px;
     }
+
+    .navbar-brand:hover, .nav-link:hover {
+      color: #000000;
+    }
+    /* ul.nav a:hover { color: #00C853 !important; } */
     </style>
     <head>
       {% if title %}
@@ -28,12 +40,12 @@
        <script language="JavaScript" type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <!--END PyMarket CSS-->
     <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Gugi">
+      href="https://fonts.googleapis.com/css?family=Titillium Web">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('dashboard.dashboard') }}" style="font-family: 'Gugi', serif;">
+            <a class="navbar-brand" href="{{ url_for('dashboard.dashboard') }}">
                 <span data-feather="home"></span>
                 PyMarket
             </a>
@@ -44,25 +56,25 @@
                 <ul class="navbar-nav mr-auto">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('orders.orders') }}" style="font-family: 'Gugi', serif;">
+                        <a class="nav-link" href="{{ url_for('orders.orders') }}">
                             <span data-feather="file"></span>
                             Orders
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('inventory.inventory') }}" style="font-family: 'Gugi', serif;">
+                        <a class="nav-link" href="{{ url_for('inventory.inventory') }}">
                             <span data-feather="shopping-cart"></span>
                             Inventory
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('transaction.incoming_transactions') }}" style="font-family: 'Gugi', serif;">
+                        <a class="nav-link" href="{{ url_for('transaction.incoming_transactions') }}">
                             <span data-feather="file"></span>
                             Incoming Transactions
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('transaction.outgoing_transactions') }}" style="font-family: 'Gugi', serif;">
+                        <a class="nav-link" href="{{ url_for('transaction.outgoing_transactions') }}">
                             <span data-feather="file"></span>
                             Outgoing Transactions
                         </a>
@@ -71,7 +83,7 @@
                 <ul class="navbar-nav">
                     {% if title != 'Sign In' %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('user_auth.logout') }}" style="font-family: 'Gugi', serif;">
+                            <a class="nav-link" href="{{ url_for('user_auth.logout') }}">
                                 <span data-feather="power"></span>
                                 Sign out
                             </a>

@@ -66,6 +66,8 @@ table {
   /* font-weight: 400;
   color: white;
   font-size: 13pt; */
+  font-family: 'Titillium Web', san-serif;
+  font-size: 18px;
   border-spacing: 1;
   border-collapse: collapse;
   background: #f1f2f6;
@@ -85,10 +87,13 @@ table td, table th {
 }
 table thead tr {
   height: 60px;
-  font-weight: 400;
+  font-weight: 500;
   color: white;
   font-size: 13pt;
-  background: #1e90ff;
+  /* background: #1e90ff; */
+  /* background: #00BFA5; */
+  background: #304FFE;
+  /* background: #000000; */
 
 }
 table tbody tr {
