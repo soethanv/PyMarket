@@ -90,9 +90,10 @@ table thead tr {
   font-weight: 500;
   color: white;
   font-size: 13pt;
+  background: #FF8F00;
   /* background: #1e90ff; */
   /* background: #00BFA5; */
-  background: #304FFE;
+  /* background: #304FFE; */
   /* background: #000000; */
 
 }

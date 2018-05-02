@@ -34,8 +34,10 @@ body{
 .text-center {
   width: 100%;
   height: 95px;
+  background-color: #FF8F00;
+  /* background-color: #4CAF50; */
   /* background-color: #000000; */
-  background-color: #304FFE;
+  /* background-color: #304FFE; */
   /* background-color: #B2DFDB; */
   /* background-color: #26de81; */
   color: #ffffff;
