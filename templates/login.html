@@ -8,18 +8,28 @@
         <h3 style="margin:10px;">Sign In</h3>
     </div>
     <div class="center_div">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+
+            {% endif %}
+        {% endwith %}
+
         <form action="" method="post">
             {{ form.hidden_tag() }}
-            <p style="margin-bottom:0px;">
+            <p style="margin-bottom:10px;">
 
-                {{ form.username(size=32) }}<br>
+                {{ form.username(size=32) }}
                 {% for error in form.username.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </p>
-            <p style="margin-bottom:0px;">
+            <p style="margin-bottom:10px;">
 
-                {{ form.password(size=32) }}<br>
+                {{ form.password(size=32) }}
                 {% for error in form.password.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
@@ -29,14 +39,14 @@
     </div>
 </div>
 <script>
-    $(document).ready(function() {
-        $("#submit").addClass("btn btn-primary btn-block btn-sm");
-        $("#username").addClass("form-control");
-        $("#password").addClass("form-control");
-        $("#username").attr("placeholder", "Username");
-        $("#password").attr("placeholder", "Password");
+$(document).ready(function() {
+    $("#submit").addClass("btn btn-primary btn-block btn-sm");
+    $("#username").addClass("form-control");
+    $("#password").addClass("form-control");
+    $("#username").attr("placeholder", "Username");
+    $("#password").attr("placeholder", "Password");
 
-    });
+});
 </script>
 
 {% endblock %}
