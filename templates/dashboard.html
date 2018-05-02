@@ -1,21 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <div>
-<h1 class="text-center">Dashboard</h1>
+<h1 class="text-center" style="font-family: 'Titillium Web', san-serif;">Dashboard</h1>
 </div>
 <div class="row" style="margin-top:20px;">
-    <div class="col-sm-6 left">
-        <h2 class="sub-header">Items Expiring Soon</h2>
-        <div class="table-responsive">
-            <table id="expire_table" style="width:100%" class="table table-striped table-bordered"></table>
+    <div class="col-sm-6">
+        <div class="limiter">
+          <div class="container-table100">
+            <div class="wrap-table100">
+                <h2 class="sub-header" style="font-family: 'Titillium Web', san-serif;">Items Expiring Soon</h2>
+              <div class="table-responsive">
+                  <table id="expire_table" style="width:100%" class="table table-striped table-bordered"></table>
+              </div>
+          </div>
         </div>
-    </div>
 
-    <div class="col-sm-6 right">
-        <h2 class="sub-header">Products Need Reordering</h2>
-        <div class="table-responsive">
-            <table id="reorder_table" style="width:100%" class="table table-striped table-bordered"></table>
+    </div>
+  </div>
+    <div class="col-sm-6">
+        <div class="limiter">
+          <div class="container-table100">
+            <div class="wrap-table100">
+              <h2 class="sub-header" style="font-family: 'Titillium Web', san-serif;">Products Need Reordering</h2>
+              <div class="table-responsive">
+                  <table id="reorder_table" style="width:100%" class="table table-striped table-bordered"></table>
+              </div>
+          </div>
         </div>
     </div>
 </div>
