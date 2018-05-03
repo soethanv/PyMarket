@@ -7,7 +7,7 @@ class IncomingTransaction(db.Model):
     batchID = db.Column(db.Integer, primary_key=True)
     SKU = db.Column(db.Integer, nullable=False)
     producer = db.Column(db.String(32), nullable=False)
-    transactionDate = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    transactionDate = db.Column(db.DateTime, default=datetime.utcnow)
 
 
     def __init__(self, batchID, SKU, producer):
@@ -17,4 +17,4 @@ class IncomingTransaction(db.Model):
 
 
     def __repr__(self):
-        return '<IncomingTransaction {}>'.format(self.incTransactionID)
+        return '<IncomingTransaction {}>'.format(self.batchID)

@@ -83,17 +83,17 @@ def get_reorder_items():
 # Batch crud methods
 
 def create_product_batch(SKU, producer, batch_quantity, year, month, day):
-    product_batch = ProductBatch(SKU, producer, batch_quantity, date(year, month, day))
+    product_batch = ProductBatch(SKU, producer, batch_quantity, datetime(year, month, day))
     try:
         db.session.add(product_batch)
         db.session.commit()
 
-        # TODO: make sure product_batch has an ID at this point, verify this gets logged in db
-        db.session.add(IncomingTransaction(product_batch.batchID, SKU, producer))
-
         product = Product.query.filter_by(SKU=SKU).first()
         product.stock_quantity = product.stock_quantity + batch_quantity
-        # product.update_stock_quantity()
+
+        # make sure product_batch has an ID at this point, verify this gets logged in db
+        db.session.add(IncomingTransaction(product_batch.batchID, SKU, producer))
+
         db.session.commit()
     except Exception as err:
         db.session.rollback()
