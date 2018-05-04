@@ -188,7 +188,7 @@
       table_str +=      '<td class="batchid">'+batch_data[i][0]+'</td>'+
                         '<td>'+batch_data[i][1]+'</td>'+
                         '<td>'+batch_data[i][2]+'</td>'+
-                        '<td>'+expire_date+'</td>'+
+                        '<td>'+batch_data[i][3]+'</td>'+
                         '<td>'+
                             '<button type="button" name="deleteBButton" class="btn btn-danger btn-sm" style="margin-left:10px" >Delete</button>'
                           +'</td>'+
@@ -227,7 +227,7 @@
 
   $(document).ready(function() {
     var inventory_data = {{inventory|tojson}};
-    console.log(typeof(inventory_data))
+    //console.log(typeof(inventory_data));
     var table = $('#inventory_table').DataTable( {
       data: inventory_data,
 
